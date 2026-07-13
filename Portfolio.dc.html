@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #222222; color: #ffffff; font-family: 'Outfit', sans-serif; }
+    ::selection { background: #657fff; color: #ffffff; }
+    @keyframes wordIn { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+    @keyframes colorCycle {
+      0% { color: #ffea30; } 12.5% { color: #ff6767; } 25% { color: #ffb74d; } 37.5% { color: #58d65e; }
+      50% { color: #66ccff; } 62.5% { color: #657fff; } 75% { color: #aa80ff; } 87.5% { color: #ff80bf; } 100% { color: #ffea30; }
+    }
+    @keyframes grainShift {
+      0% { background-position: 0 0; } 25% { background-position: -90px 40px; }
+      50% { background-position: 60px -70px; } 75% { background-position: -40px -90px; } 100% { background-position: 0 0; }
+    }
+    @keyframes marqueeLoop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes barPulse { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.55); } }
+    @keyframes blinkDot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+    @keyframes menuIn { from { transform: translateX(100%); } to { transform: none; } }
+  </style>
+</helmet>
+
+<div style="font-family: 'Outfit', sans-serif; background: #222222; color: #ffffff; overflow-x: clip;">
+
+  <!-- GRAIN OVERLAY -->
+  <div style="display: {{ grainDisplay }}; position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.1; mix-blend-mode: soft-light; background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); background-size: 300px 300px; animation: grainShift 0.9s steps(4) infinite;"></div>
+
+  <!-- NAV -->
+  <nav data-screen-label="Nav" style="position: absolute; top: 0; left: 0; right: 0; z-index: 30;">
+    <div style="max-width: 1232px; margin: 0 auto; padding: 28px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="font-size: 22px; font-weight: 800; letter-spacing: 1px; animation: colorCycle 16s linear infinite; cursor: default;">TAPHAPPY.dev</div>
+      <sc-if value="{{ navDesktop }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.4); border-radius: 16px; padding: 6px 8px;">
+          <a onClick="{{ goWork }}" style="font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: color 0.325s ease; text-decoration: none;" style-hover="color: #ffea30;">Work</a>
+          <a onClick="{{ goAbout }}" style="font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: color 0.325s ease; text-decoration: none;" style-hover="color: #58d65e;">About</a>
+          <a onClick="{{ goStack }}" style="font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: color 0.325s ease; text-decoration: none;" style-hover="color: #66ccff;">Stack</a>
+          <a onClick="{{ goContact }}" style="font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: color 0.325s ease; text-decoration: none;" style-hover="color: #ff80bf;">Contact</a>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ openMenu }}" aria-label="Open menu" style="width: 48px; height: 48px; border-radius: 16px; background: rgba(0,0,0,0.4); border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center;">
+          <span style="display: block; width: 20px; height: 3px; border-radius: 2px; background: #ffffff;"></span>
+          <span style="display: block; width: 20px; height: 3px; border-radius: 2px; background: #ffffff;"></span>
+          <span style="display: block; width: 20px; height: 3px; border-radius: 2px; background: #ffffff;"></span>
+        </button>
+      </sc-if>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 70; background: #111111; animation: menuIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; display: flex; flex-direction: column; padding: 28px 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 22px; font-weight: 800; animation: colorCycle 16s linear infinite;">TAPHAPPY.dev</div>
+        <button onClick="{{ closeMenu }}" aria-label="Close menu" style="width: 48px; height: 48px; border-radius: 16px; background: rgba(255,255,255,0.1); border: none; cursor: pointer; color: #ffffff; font-size: 22px; font-weight: 600;">✕</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 64px;">
+        <a onClick="{{ goWork }}" style="font-size: 40px; font-weight: 800; color: #ffea30; cursor: pointer; padding: 12px 0; text-decoration: none;">Work</a>
+        <a onClick="{{ goAbout }}" style="font-size: 40px; font-weight: 800; color: #58d65e; cursor: pointer; padding: 12px 0; text-decoration: none;">About</a>
+        <a onClick="{{ goStack }}" style="font-size: 40px; font-weight: 800; color: #66ccff; cursor: pointer; padding: 12px 0; text-decoration: none;">Stack</a>
+        <a onClick="{{ goContact }}" style="font-size: 40px; font-weight: 800; color: #ff80bf; cursor: pointer; padding: 12px 0; text-decoration: none;">Contact</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- HERO -->
+  <header data-screen-label="Hero" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: 1232px; margin: 0 auto; padding: 180px 24px 140px; box-sizing: border-box; position: relative;">
+    <div style="font-size: 16px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.4); margin-bottom: 40px; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) both;">★ 4.8 avg rating&nbsp;&nbsp;·&nbsp;&nbsp;4 apps shipped&nbsp;&nbsp;·&nbsp;&nbsp;80k+ downloads</div>
+
+    <h1 style="margin: 0; font-weight: 800; font-size: clamp(34px, 4.4vw, 48px); line-height: 1.78; max-width: 1000px; letter-spacing: -0.5px;">
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.1s both;">I</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.2s both;">build</span>
+      <span style="display: inline-flex; width: 80px; height: 56px; border-radius: 16px; background: #2e2e2e; vertical-align: middle; margin: 0 10px; align-items: center; justify-content: center; overflow: hidden; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.3s both;">
+        <span style="display: flex; width: 24px; height: 40px; border-radius: 7px; background: #657fff; flex-direction: column; align-items: center; padding-top: 5px; box-sizing: border-box; gap: 4px;">
+          <span style="display: block; width: 14px; height: 5px; border-radius: 3px; background: #8b9fff;"></span>
+          <span style="display: block; width: 14px; height: 14px; border-radius: 5px; background: #2c3873;"></span>
+        </span>
+      </span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.4s both;">mobile</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.5s both;">apps</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.6s both;">that</span>
+      <span style="display: inline-flex; width: 80px; height: 56px; border-radius: 16px; background: #10131f; vertical-align: middle; margin: 0 10px; align-items: center; justify-content: center; overflow: hidden; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.7s both;">
+        <span style="display: flex; flex-direction: column; align-items: center; transform: rotate(38deg); gap: 2px;">
+          <span style="display: block; width: 14px; height: 26px; border-radius: 7px 7px 3px 3px; background: #ff6767;"></span>
+          <span style="display: block; width: 10px; height: 10px; border-radius: 50%; background: #ffb74d;"></span>
+        </span>
+      </span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.8s both;">people</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 0.9s both;">around</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.0s both;">the</span>
+      <span style="display: inline-flex; width: 80px; height: 56px; border-radius: 16px; background: #0e1220; vertical-align: middle; margin: 0 10px; align-items: center; justify-content: center; overflow: hidden; position: relative; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.1s both;">
+        <span style="display: block; width: 44px; height: 44px; border-radius: 50%; background: #1b2547; position: relative;">
+          <span style="position: absolute; top: 10px; left: 12px; width: 4px; height: 4px; border-radius: 50%; background: #ffea30;"></span>
+          <span style="position: absolute; top: 22px; left: 26px; width: 3px; height: 3px; border-radius: 50%; background: #ffea30;"></span>
+          <span style="position: absolute; top: 30px; left: 14px; width: 3px; height: 3px; border-radius: 50%; background: #ffb74d;"></span>
+          <span style="position: absolute; top: 14px; left: 30px; width: 3px; height: 3px; border-radius: 50%; background: #66ccff;"></span>
+        </span>
+      </span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.2s both;">world</span>
+      <span style="display: inline-block; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.3s both;">use</span>
+      <span style="display: inline-block; position: relative; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.4s both;">daily
+        <svg viewBox="0 0 140 70" style="display: {{ doodleDisplay }}; position: absolute; inset: -14px -18px; width: calc(100% + 36px); height: calc(100% + 28px); pointer-events: none;">
+          <ellipse cx="70" cy="35" rx="62" ry="26" fill="none" stroke="#ff80bf" stroke-width="3" stroke-linecap="round" transform="rotate(-3 70 35)"></ellipse>
+          <ellipse cx="70" cy="36" rx="58" ry="23" fill="none" stroke="#ff80bf" stroke-width="2.5" stroke-linecap="round" transform="rotate(2 70 36)"></ellipse>
+        </svg>
+      </span>
+    </h1>
+
+    <svg viewBox="0 0 140 100" style="display: {{ doodleDisplay }}; position: absolute; right: 8%; top: 24%; width: 130px; pointer-events: none;">
+      <path d="M14,88 Q30,30 96,26" fill="none" stroke="#58d65e" stroke-width="5" stroke-linecap="round"></path>
+      <path d="M82,12 L100,26 L80,40" fill="none" stroke="#58d65e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+
+    <div style="margin-top: 64px; animation: wordIn 0.6s cubic-bezier(0.2,0.8,0.3,1) 1.7s both;">
+      <button onClick="{{ goWork }}" style="width: {{ ctaW }}; max-width: 100%; height: {{ ctaH }}; border-radius: {{ ctaR }}; background: #657fff; color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 600; border: none; cursor: pointer; transition: background 0.325s ease;" style-hover="background: #8b9fff;" style-active="background: #4c5fbf;">See my work</button>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <section data-screen-label="Stats" style="max-width: 1280px; margin: 0 auto; padding: 120px 24px 200px; box-sizing: border-box;">
+    <div data-reveal="1" style="font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.25); margin-bottom: 56px;">By the numbers</div>
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+
+      <div data-reveal="1" data-delay="0" style="flex: 0 1 400px; max-width: 100%; height: 400px; border-radius: 45px; background: #ff80bf; position: relative; overflow: hidden; padding: 44px; box-sizing: border-box;">
+        <div style="font-size: 80px; font-weight: 800; color: #804060; line-height: 1;">80k+</div>
+        <div style="font-size: 20px; font-weight: 600; color: #804060; margin-top: 16px; max-width: 240px;">downloads across the App Store &amp; Google Play</div>
+        <div style="position: absolute; right: -90px; bottom: -90px; width: 260px; height: 260px; border-radius: 50%; background: #804060;">
+          <div style="position: absolute; top: 52px; left: 48px; width: 10px; height: 10px; border-radius: 50%; background: #ffabd6;"></div>
+          <div style="position: absolute; top: 92px; left: 96px; width: 8px; height: 8px; border-radius: 50%; background: #ffabd6;"></div>
+          <div style="position: absolute; top: 44px; left: 120px; width: 7px; height: 7px; border-radius: 50%; background: #ffabd6;"></div>
+        </div>
+      </div>
+
+      <div data-reveal="1" data-delay="600" style="flex: 0 1 400px; max-width: 100%; height: 400px; border-radius: 45px; background: #657fff; position: relative; overflow: hidden; padding: 44px; box-sizing: border-box; margin-top: 80px;">
+        <div style="font-size: 80px; font-weight: 800; color: #2c3873; line-height: 1;">04</div>
+        <div style="font-size: 20px; font-weight: 600; color: #2c3873; margin-top: 16px; max-width: 240px;">apps designed, built &amp; shipped — solo, end to end</div>
+        <div style="position: absolute; right: -30px; bottom: -70px; width: 120px; height: 230px; border-radius: 26px; background: #2c3873; transform: rotate(-14deg);"></div>
+        <div style="position: absolute; right: 70px; bottom: -100px; width: 120px; height: 230px; border-radius: 26px; background: #4c5fbf; transform: rotate(8deg);"></div>
+      </div>
+
+      <div data-reveal="1" data-delay="1200" style="flex: 0 1 400px; max-width: 100%; height: 400px; border-radius: 45px; background: #58d65e; position: relative; overflow: hidden; padding: 44px; box-sizing: border-box;">
+        <div style="font-size: 80px; font-weight: 800; color: #245726; line-height: 1;">4.8★</div>
+        <div style="font-size: 20px; font-weight: 600; color: #245726; margin-top: 16px; max-width: 240px;">average store rating across every live app</div>
+        <div style="position: absolute; right: 36px; bottom: -20px; display: flex; align-items: flex-end; gap: 12px;">
+          <div style="width: 34px; height: 70px; border-radius: 12px 12px 0 0; background: #245726;"></div>
+          <div style="width: 34px; height: 110px; border-radius: 12px 12px 0 0; background: #245726;"></div>
+          <div style="width: 34px; height: 160px; border-radius: 12px 12px 0 0; background: #245726;"></div>
+          <div style="width: 34px; height: 210px; border-radius: 12px 12px 0 0; background: #245726;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK: PINNED HORIZONTAL GALLERY -->
+  <section id="work" data-screen-label="Work gallery">
+    <div id="gwrap" style="position: relative;">
+      <div id="gsticky" style="position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box;">
+        <div style="max-width: 1232px; margin: 0 auto; width: 100%; padding: 0 24px; box-sizing: border-box;">
+          <div data-reveal="1" style="font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.25);">Selected work</div>
+        </div>
+        <div id="gscroll" style="overflow: hidden; margin-top: 40px;">
+          <div id="gtrack" style="display: flex; gap: 24px; padding: 8px 24px; width: max-content; will-change: transform;">
+
+            <!-- CARD: Coin Flip -->
+            <article data-screen-label="Card: Coin Flip" style="width: 720px; max-width: 84vw; height: 560px; background: #2e2e2e; border-radius: 32px; position: relative; padding: 40px; box-sizing: border-box; display: flex; gap: 40px; flex-shrink: 0; overflow: hidden;">
+              <div style="position: absolute; top: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: #ffea30; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 28px; height: 28px; border-radius: 50%; background: #5c5410;"></div>
+              </div>
+              <div style="position: absolute; top: 24px; right: 24px; background: #ffea30; color: #5c5410; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 16px;">★ #1 in Utilities</div>
+              <div style="display: flex; align-items: center; justify-content: center; flex: 0 0 250px; margin-top: 40px;">
+                <div style="width: 230px; height: 440px; background: #191919; border-radius: 32px; padding: 10px; box-sizing: border-box;">
+                  <div style="width: 100%; height: 100%; border-radius: 24px; background: #ffea30; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 16px; box-sizing: border-box;">
+                    <div style="font-size: 16px; font-weight: 700; color: #5c5410;">Coin Flip</div>
+                    <div style="width: 110px; height: 110px; border-radius: 50%; background: #5c5410; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 800; color: #ffea30;">H</div>
+                    <div style="width: 100%; padding: 14px 0; border-radius: 16px; background: #5c5410; color: #ffea30; font-size: 15px; font-weight: 600; text-align: center;">FLIP IT</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; flex: 1; padding-top: 96px;">
+                <h3 style="margin: 0; font-size: 32px; font-weight: 800; color: #ffea30;">Coin Flip</h3>
+                <div style="font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">Utility · 50k downloads</div>
+                <p style="font-size: 22px; font-weight: 600; line-height: 1.45; color: #ffffff; margin: 24px 0 0;">People have settled over 4 million impossible decisions with a single flip.</p>
+                <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <span style="background: #66ccff; color: #336680; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #9ce0ff;"> App Store</span>
+                  <span style="background: #58d65e; color: #245726; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #8ee592;">▶ Google Play</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD: Plant Radar -->
+            <article data-screen-label="Card: Plant Radar" style="width: 720px; max-width: 84vw; height: 560px; background: #2e2e2e; border-radius: 32px; position: relative; padding: 40px; box-sizing: border-box; display: flex; gap: 40px; flex-shrink: 0; overflow: hidden;">
+              <div style="position: absolute; top: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: #58d65e; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 12px; height: 26px; border-radius: 8px 8px 2px 2px; background: #245726;"></div>
+              </div>
+              <div style="position: absolute; top: 24px; right: 24px; background: #ffea30; color: #5c5410; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 16px;">★ New Apps We Love</div>
+              <div style="display: flex; align-items: center; justify-content: center; flex: 0 0 250px; margin-top: 40px;">
+                <div style="width: 230px; height: 440px; background: #191919; border-radius: 32px; padding: 10px; box-sizing: border-box;">
+                  <div style="width: 100%; height: 100%; border-radius: 24px; background: #58d65e; display: flex; flex-direction: column; gap: 12px; padding: 24px 14px; box-sizing: border-box;">
+                    <div style="font-size: 16px; font-weight: 700; color: #245726;">My plants</div>
+                    <div style="display: flex; align-items: center; gap: 10px; background: #245726; border-radius: 14px; padding: 12px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: #8ee592;"></div>
+                      <div style="flex: 1;"><div style="height: 7px; width: 70%; border-radius: 4px; background: #8ee592;"></div><div style="height: 5px; width: 45%; border-radius: 4px; background: #58d65e; margin-top: 6px;"></div></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; background: #245726; border-radius: 14px; padding: 12px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: #8ee592;"></div>
+                      <div style="flex: 1;"><div style="height: 7px; width: 55%; border-radius: 4px; background: #8ee592;"></div><div style="height: 5px; width: 65%; border-radius: 4px; background: #58d65e; margin-top: 6px;"></div></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; background: #245726; border-radius: 14px; padding: 12px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: #8ee592;"></div>
+                      <div style="flex: 1;"><div style="height: 7px; width: 80%; border-radius: 4px; background: #8ee592;"></div><div style="height: 5px; width: 30%; border-radius: 4px; background: #58d65e; margin-top: 6px;"></div></div>
+                    </div>
+                    <div style="margin-top: auto; width: 100%; padding: 14px 0; border-radius: 16px; background: #245726; color: #8ee592; font-size: 15px; font-weight: 600; text-align: center; box-sizing: border-box;">Water today · 2</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; flex: 1; padding-top: 96px;">
+                <h3 style="margin: 0; font-size: 32px; font-weight: 800; color: #58d65e;">Plant Radar</h3>
+                <div style="font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">Productivity · 100+ downloads</div>
+                <p style="font-size: 22px; font-weight: 600; line-height: 1.45; color: #ffffff; margin: 24px 0 0;">100+ plant parents haven't killed a single plant since installing.</p>
+                <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <span style="background: #ff80bf; color: #804060; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #ffabd6;"> App Store</span>
+                  <span style="background: #ffea30; color: #5c5410; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #fff37f;">▶ Google Play</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD: PDF Scanner -->
+            <article data-screen-label="Card: PDF Scanner" style="width: 720px; max-width: 84vw; height: 560px; background: #2e2e2e; border-radius: 32px; position: relative; padding: 40px; box-sizing: border-box; display: flex; gap: 40px; flex-shrink: 0; overflow: hidden;">
+              <div style="position: absolute; top: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: #66ccff; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 22px; height: 28px; border-radius: 4px; background: #336680;"></div>
+              </div>
+              <div style="position: absolute; top: 24px; right: 24px; background: #ffea30; color: #5c5410; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 16px;">★ Featured</div>
+              <div style="display: flex; align-items: center; justify-content: center; flex: 0 0 250px; margin-top: 40px;">
+                <div style="width: 230px; height: 440px; background: #191919; border-radius: 32px; padding: 10px; box-sizing: border-box;">
+                  <div style="width: 100%; height: 100%; border-radius: 24px; background: #66ccff; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 24px 16px; box-sizing: border-box;">
+                    <div style="font-size: 16px; font-weight: 700; color: #336680; align-self: flex-start;">Scan</div>
+                    <div style="width: 140px; height: 190px; border-radius: 10px; background: #f4fbff; padding: 18px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 9px;">
+                      <div style="height: 8px; width: 60%; border-radius: 4px; background: #336680;"></div>
+                      <div style="height: 6px; width: 90%; border-radius: 4px; background: #9ce0ff;"></div>
+                      <div style="height: 6px; width: 85%; border-radius: 4px; background: #9ce0ff;"></div>
+                      <div style="height: 6px; width: 92%; border-radius: 4px; background: #9ce0ff;"></div>
+                      <div style="height: 6px; width: 70%; border-radius: 4px; background: #9ce0ff;"></div>
+                      <div style="height: 6px; width: 88%; border-radius: 4px; background: #9ce0ff;"></div>
+                    </div>
+                    <div style="margin-top: auto; width: 100%; padding: 14px 0; border-radius: 16px; background: #336680; color: #9ce0ff; font-size: 15px; font-weight: 600; text-align: center;">Save as PDF</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; flex: 1; padding-top: 96px;">
+                <h3 style="margin: 0; font-size: 32px; font-weight: 800; color: #66ccff;">PDF Scanner</h3>
+                <div style="font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">Utility · 30k downloads</div>
+                <p style="font-size: 22px; font-weight: 600; line-height: 1.45; color: #ffffff; margin: 24px 0 0;">Users have scanned 900,000 pages without ever touching a copier.</p>
+                <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <span style="background: #657fff; color: #ffffff; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #8b9fff;"> App Store</span>
+                  <span style="background: #ff6767; color: #7a2626; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #ff9a9a;">▶ Google Play</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD: Habit Loop -->
+            <article data-screen-label="Card: Habit Loop" style="width: 720px; max-width: 84vw; height: 560px; background: #2e2e2e; border-radius: 32px; position: relative; padding: 40px; box-sizing: border-box; display: flex; gap: 40px; flex-shrink: 0; overflow: hidden;">
+              <div style="position: absolute; top: 24px; left: 24px; width: 56px; height: 56px; border-radius: 16px; background: #ff80bf; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 26px; height: 26px; border-radius: 50%; border: 6px solid #804060; box-sizing: border-box;"></div>
+              </div>
+              <div style="position: absolute; top: 24px; right: 24px; background: #ffea30; color: #5c5410; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 16px;">★ Editors' pick</div>
+              <div style="display: flex; align-items: center; justify-content: center; flex: 0 0 250px; margin-top: 40px;">
+                <div style="width: 230px; height: 440px; background: #191919; border-radius: 32px; padding: 10px; box-sizing: border-box;">
+                  <div style="width: 100%; height: 100%; border-radius: 24px; background: #ff80bf; display: flex; flex-direction: column; gap: 16px; padding: 24px 16px; box-sizing: border-box;">
+                    <div style="font-size: 16px; font-weight: 700; color: #804060;">Habit Loop</div>
+                    <div style="font-size: 34px; font-weight: 800; color: #804060; line-height: 1;">día 47 🔥</div>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 8px;">
+                      <div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #ffabd6;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #ffabd6;"></div>
+                      <div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #ffabd6;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div>
+                      <div style="aspect-ratio: 1; border-radius: 7px; background: #ffabd6;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #ffabd6;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div><div style="aspect-ratio: 1; border-radius: 7px; background: #804060;"></div>
+                    </div>
+                    <div style="margin-top: auto; width: 100%; padding: 14px 0; border-radius: 16px; background: #804060; color: #ffabd6; font-size: 15px; font-weight: 600; text-align: center; box-sizing: border-box;">Check in ✓</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; flex: 1; padding-top: 96px;">
+                <h3 style="margin: 0; font-size: 32px; font-weight: 800; color: #ff80bf;">Habit Loop</h3>
+                <div style="font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">Health · 12k downloads</div>
+                <p style="font-size: 22px; font-weight: 600; line-height: 1.45; color: #ffffff; margin: 24px 0 0;">12k people have kept streaks alive for a combined 380 years.</p>
+                <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <span style="background: #ffb74d; color: #6b4a12; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #ffd08a;"> App Store</span>
+                  <span style="background: #aa80ff; color: #4a3773; padding: 12px 16px; border-radius: 16px; font-size: 15px; font-weight: 600; transition: background 0.325s ease; cursor: pointer;" style-hover="background: #c6abff;">▶ Google Play</span>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" data-screen-label="About" style="max-width: 1232px; margin: 0 auto; padding: 240px 24px 120px; box-sizing: border-box; display: flex; gap: 56px; flex-wrap: wrap; align-items: center;">
+    <div data-reveal="1" style="flex: 0 1 440px; max-width: 100%; height: 560px; border-radius: 45px; background: #aa80ff; position: relative; overflow: hidden; padding: 36px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end;">
+      <div style="position: absolute; top: 90px; left: 50%; transform: translateX(-50%); width: 170px; height: 170px; border-radius: 50%; background: #4a3773; opacity: 0.9;"></div>
+      <div style="position: absolute; top: 250px; left: 50%; transform: translateX(-50%); width: 300px; height: 220px; border-radius: 90px 90px 0 0; background: #4a3773; opacity: 0.9;"></div>
+      <div style="position: absolute; top: 40px; left: 36px; font-family: monospace; font-size: 12px; color: #4a3773;">[ drop portrait.jpg — renders duotone ]</div>
+      <div style="position: relative; z-index: 1;">
+        <div style="font-size: 32px; font-weight: 800; color: #ffffff;">Max Taplin</div>
+        <div style="font-size: 18px; font-weight: 600; color: #e3d5ff; margin-top: 4px;">Indie mobile app developer</div>
+      </div>
+    </div>
+    <div data-reveal="1" data-delay="300" style="flex: 1 1 480px; min-width: 320px;">
+      <div style="font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.25); margin-bottom: 40px;">About</div>
+      <p style="font-size: 28px; font-weight: 600; line-height: 1.4; margin: 0 0 32px;">I've spent <span style="color: #ffea30;">six years</span> shipping mobile apps solo — design, code, store page, support, all of it.</p>
+      <p style="font-size: 28px; font-weight: 600; line-height: 1.4; margin: 0 0 32px;">Every app runs on <span style="color: #66ccff;">iOS and Android</span> from one codebase, so ideas reach both stores in weeks, not quarters.</p>
+      <p style="font-size: 28px; font-weight: 600; line-height: 1.4; margin: 0 0 48px;">I care about three things: <span style="color: #58d65e;">shipping fast</span>, <span style="color: #ff80bf;">ranking in the stores</span>, and building apps people <span style="color: #aa80ff;">open every day</span>.</p>
+      <button style="height: 64px; padding: 0 40px; border-radius: 24px; background: #58d65e; color: #245726; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 600; border: none; cursor: pointer; transition: background 0.325s ease;" style-hover="background: #8ee592;">Download résumé</button>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack" data-screen-label="Stack" style="max-width: 1232px; margin: 0 auto; padding: 200px 24px; box-sizing: border-box;">
+    <div data-reveal="1" style="font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.25); margin-bottom: 96px;">How I work</div>
+    <div style="display: flex; flex-direction: column; gap: 160px;">
+
+      <div data-reveal="1" style="display: flex; gap: 56px; align-items: center; flex-wrap: wrap;">
+        <div style="flex: 1 1 400px; min-width: 300px;">
+          <div style="font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #66ccff; margin-bottom: 20px;">How I build</div>
+          <h2 style="margin: 0 0 20px; font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1.05;">One codebase, both stores</h2>
+          <p style="margin: 0; font-size: 20px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 460px;">Flutter cross-platform builds — pixel-identical on iOS and Android, native where it counts.</p>
+        </div>
+        <div style="flex: 1 1 420px; min-width: 300px; height: 340px; border-radius: 45px; background: #66ccff; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 90px; top: 70px; width: 120px; height: 230px; border-radius: 26px; background: #336680; transform: rotate(-8deg);"></div>
+          <div style="position: absolute; left: 200px; top: 50px; width: 120px; height: 230px; border-radius: 26px; background: #9ce0ff; transform: rotate(6deg);"></div>
+          <div style="position: absolute; left: 230px; top: 80px; width: 60px; height: 10px; border-radius: 6px; background: #336680; transform: rotate(6deg);"></div>
+          <div style="position: absolute; left: 233px; top: 104px; width: 44px; height: 10px; border-radius: 6px; background: #336680; transform: rotate(6deg);"></div>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="display: flex; gap: 56px; align-items: center; flex-wrap: wrap; flex-direction: row-reverse;">
+        <div style="flex: 1 1 400px; min-width: 300px;">
+          <div style="font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aa80ff; margin-bottom: 20px;">How I measure</div>
+          <h2 style="margin: 0 0 20px; font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1.05;">Analytics from day one</h2>
+          <p style="margin: 0; font-size: 20px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 460px;">Firebase + event pipelines behind every screen — retention and funnels, not vibes.</p>
+        </div>
+        <div style="flex: 1 1 420px; min-width: 300px; height: 340px; border-radius: 45px; background: #aa80ff; position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; gap: 20px; padding-bottom: 0;">
+          <div style="width: 52px; height: 130px; border-radius: 14px 14px 0 0; background: #4a3773; transform-origin: bottom; animation: barPulse 3s ease-in-out infinite;"></div>
+          <div style="width: 52px; height: 200px; border-radius: 14px 14px 0 0; background: #4a3773; transform-origin: bottom; animation: barPulse 3s ease-in-out 0.4s infinite;"></div>
+          <div style="width: 52px; height: 160px; border-radius: 14px 14px 0 0; background: #c6abff; transform-origin: bottom; animation: barPulse 3s ease-in-out 0.8s infinite;"></div>
+          <div style="width: 52px; height: 250px; border-radius: 14px 14px 0 0; background: #4a3773; transform-origin: bottom; animation: barPulse 3s ease-in-out 1.2s infinite;"></div>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="display: flex; gap: 56px; align-items: center; flex-wrap: wrap;">
+        <div style="flex: 1 1 400px; min-width: 300px;">
+          <div style="font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #58d65e; margin-bottom: 20px;">How I grow</div>
+          <h2 style="margin: 0 0 20px; font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1.05;">Built to climb the charts</h2>
+          <p style="margin: 0; font-size: 20px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 460px;">App Store optimization as a habit — keywords, screenshots, ratings loops, week after week.</p>
+        </div>
+        <div style="flex: 1 1 420px; min-width: 300px; height: 340px; border-radius: 45px; background: #58d65e; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 48px; top: 48px; width: 240px; height: 52px; border-radius: 26px; background: #245726; display: flex; align-items: center; padding: 0 20px; box-sizing: border-box; gap: 12px;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; border: 4px solid #8ee592; box-sizing: border-box;"></div>
+            <div style="width: 120px; height: 8px; border-radius: 4px; background: #8ee592;"></div>
+          </div>
+          <div style="position: absolute; left: 60px; top: 130px; width: 280px; height: 44px; border-radius: 22px; background: #8ee592;"></div>
+          <div style="position: absolute; left: 60px; top: 190px; width: 220px; height: 44px; border-radius: 22px; background: #245726; opacity: 0.5;"></div>
+          <div style="position: absolute; left: 60px; top: 250px; width: 180px; height: 44px; border-radius: 22px; background: #245726; opacity: 0.3;"></div>
+          <div style="position: absolute; right: 44px; top: 128px; font-size: 30px; font-weight: 800; color: #245726;">#1</div>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="display: flex; gap: 56px; align-items: center; flex-wrap: wrap; flex-direction: row-reverse;">
+        <div style="flex: 1 1 400px; min-width: 300px;">
+          <div style="font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #ff6767; margin-bottom: 20px;">How I ship</div>
+          <h2 style="margin: 0 0 20px; font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1.05;">A release every week</h2>
+          <p style="margin: 0; font-size: 20px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 460px;">CI/CD release automation — tested, signed and in review while I'm building the next thing.</p>
+        </div>
+        <div style="flex: 1 1 420px; min-width: 300px; height: 340px; border-radius: 45px; background: #ff6767; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 0;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #7a2626;"></div>
+          <div style="width: 64px; height: 10px; background: #7a2626;"></div>
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #7a2626;"></div>
+          <div style="width: 64px; height: 10px; background: #7a2626;"></div>
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #ff9a9a; animation: blinkDot 1.6s ease-in-out infinite;"></div>
+          <div style="width: 64px; height: 10px; background: #7a2626;"></div>
+          <div style="width: 52px; height: 52px; border-radius: 16px; background: #7a2626; display: flex; align-items: center; justify-content: center; color: #ff9a9a; font-size: 24px; font-weight: 800;">✓</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROOF MARQUEE -->
+  <section data-screen-label="Proof marquee" style="max-width: 1280px; margin: 0 auto; padding: 40px 24px 240px; box-sizing: border-box;">
+    <div data-reveal="1" style="font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.25); margin-bottom: 40px;">Trusted tools &amp; mentions</div>
+    <div data-reveal="1" data-delay="200" style="height: 240px; border-radius: 45px; background: #ffb74d; display: flex; align-items: center; overflow: hidden;">
+      <div style="display: flex; width: max-content; animation: {{ marqueeAnim }}; -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent); mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);">
+        <div style="display: flex; align-items: center; gap: 72px; padding: 0 36px; white-space: nowrap;">
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;"> App Store</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">▶ Google Play</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">★★★★★ 4.8</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">Flutter</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">Firebase</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">FEATURED · Apps We Love</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">#1 in Utilities</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">TestFlight</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 72px; padding: 0 36px; white-space: nowrap;">
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;"> App Store</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">▶ Google Play</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">★★★★★ 4.8</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">Flutter</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">Firebase</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">FEATURED · Apps We Love</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">#1 in Utilities</span>
+          <span style="font-size: 28px; font-weight: 800; color: #6b4a12;">TestFlight</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT + FOOTER BAND -->
+  <div style="background: #111111;">
+    <section id="contact" data-screen-label="Contact" style="max-width: 1232px; margin: 0 auto; padding: 220px 24px 140px; box-sizing: border-box; text-align: center;">
+      <h2 data-reveal="1" style="margin: 0; font-size: 48px; font-weight: 800;">Let's build something!</h2>
+      <p data-reveal="1" data-delay="200" style="font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.5); margin: 24px auto 48px; max-width: 480px;">One developer, two stores, zero handoffs. Tell me what you want to ship.</p>
+      <div data-reveal="1" data-delay="400" style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+        <a href="mailto:hello@taphappy.dev" style="display: inline-block; padding: 24px 64px; border-radius: 24px; background: #aa80ff; color: #4a3773; font-size: 24px; font-weight: 600; text-decoration: none; transition: background 0.325s ease;" style-hover="background: #c6abff;">Contact me</a>
+        <span style="font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.4);">hello@taphappy.dev</span>
+      </div>
+    </section>
+
+    <footer data-screen-label="Footer" style="max-width: 1232px; margin: 0 auto; padding: 0 24px 64px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <div style="font-size: 18px; font-weight: 800; animation: colorCycle 16s linear infinite;">TAPHAPPY.dev</div>
+      <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+        <a onClick="{{ goWork }}" style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); cursor: pointer; text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">Work</a>
+        <a onClick="{{ goAbout }}" style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); cursor: pointer; text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">About</a>
+        <a onClick="{{ goStack }}" style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); cursor: pointer; text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">Stack</a>
+        <a onClick="{{ goContact }}" style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); cursor: pointer; text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">Contact</a>
+      </div>
+      <div style="display: flex; gap: 20px; align-items: center;">
+        <a href="#" style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">GitHub</a>
+        <a href="#" style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">LinkedIn</a>
+        <a href="#" style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.325s ease;" style-hover="color: #ffffff;">X</a>
+        <span style="font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.25);">© 2026 Max Taplin</span>
+      </div>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;showGrain&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Texture&quot; },
+  &quot;showDoodles&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Texture&quot; },
+  &quot;marqueeSeconds&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 15, &quot;min&quot;: 8, &quot;max&quot;: 30, &quot;step&quot;: 1, &quot;unit&quot;: &quot;s&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Motion&quot; }
+}">
+class Component extends DCLogic {
+  state = { isMobile: false, menuOpen: false };
+
+  componentDidMount() {
+    this.onResize = () => {
+      const m = window.innerWidth < 860;
+      if (m !== this.state.isMobile) this.setState({ isMobile: m, menuOpen: false });
+      this.layoutGallery();
+    };
+    window.addEventListener('resize', this.onResize);
+
+    this.onScroll = () => this.updateGallery();
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+
+    // scroll reveals
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    const vh = window.innerHeight;
+    els.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top > vh * 0.88) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+      }
+      el.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+      el.style.transitionDelay = (el.dataset.delay || '0') + 'ms';
+    });
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          this.io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach((el) => this.io.observe(el));
+
+    this.onResize();
+    // fonts/layout settle
+    this.layoutTimer = setTimeout(() => { this.layoutGallery(); this.updateGallery(); }, 600);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
+    if (this.io) this.io.disconnect();
+    clearTimeout(this.layoutTimer);
+  }
+
+  isNarrow() { return window.innerWidth < 860; }
+
+  layoutGallery() {
+    const wrap = document.getElementById('gwrap');
+    const track = document.getElementById('gtrack');
+    const sticky = document.getElementById('gsticky');
+    const scroll = document.getElementById('gscroll');
+    if (!wrap || !track || !sticky || !scroll) return;
+    if (this.isNarrow()) {
+      wrap.style.height = 'auto';
+      sticky.style.position = 'relative';
+      sticky.style.height = 'auto';
+      sticky.style.overflow = 'visible';
+      sticky.style.padding = '120px 0';
+      scroll.style.overflowX = 'auto';
+      track.style.transform = 'none';
+      track.style.width = 'max-content';
+    } else {
+      sticky.style.position = 'sticky';
+      sticky.style.height = '100vh';
+      sticky.style.overflow = 'hidden';
+      sticky.style.padding = '0';
+      scroll.style.overflowX = 'hidden';
+      this.maxShift = Math.max(0, track.scrollWidth - window.innerWidth + 48);
+      wrap.style.height = (window.innerHeight + this.maxShift) + 'px';
+      this.updateGallery();
+    }
+  }
+
+  updateGallery() {
+    if (this.isNarrow()) return;
+    const wrap = document.getElementById('gwrap');
+    const track = document.getElementById('gtrack');
+    if (!wrap || !track || !this.maxShift) return;
+    const rect = wrap.getBoundingClientRect();
+    const range = wrap.offsetHeight - window.innerHeight;
+    if (range <= 0) return;
+    const progress = Math.min(1, Math.max(0, -rect.top / range));
+    track.style.transform = 'translateX(' + (-progress * this.maxShift) + 'px)';
+  }
+
+  goTo(id) {
+    this.setState({ menuOpen: false });
+    const el = document.getElementById(id);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  renderVals() {
+    const m = this.state.isMobile;
+    const secs = this.props.marqueeSeconds ?? 15;
+    return {
+      isMobile: m,
+      navDesktop: !m,
+      menuOpen: this.state.menuOpen,
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      goWork: () => this.goTo('work'),
+      goAbout: () => this.goTo('about'),
+      goStack: () => this.goTo('stack'),
+      goContact: () => this.goTo('contact'),
+      ctaW: m ? '100%' : '400px',
+      ctaH: m ? '48px' : '80px',
+      ctaR: m ? '12px' : '24px',
+      grainDisplay: (this.props.showGrain ?? true) ? 'block' : 'none',
+      doodleDisplay: (this.props.showDoodles ?? true) ? 'block' : 'none',
+      marqueeAnim: 'marqueeLoop ' + secs + 's linear infinite'
+    };
+  }
+}
+</script>
+</body>
+</html>
