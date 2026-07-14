@@ -20,13 +20,13 @@
   <!-- NAV -->
   <nav class="nav">
     <div class="nav__inner">
-      <a href="index.html" style="text-decoration: none;"><div class="brand">Kissmyapps.dev</div></a>
+      <a href="/" style="text-decoration: none;"><div class="brand">Kissmyapps<span class="brand__tld">.dev</span></div></a>
       <div class="nav__pill">
-        <a href="index.html" class="nav__link nav__link--home is-current">Home</a>
-        <a href="capabilities.html" class="nav__link nav__link--capabilities">Capabilities</a>
-        <a href="portfolio.html" class="nav__link nav__link--portfolio">Portfolio</a>
-        <a href="partnerships.html" class="nav__link nav__link--partnerships">Partnerships</a>
-        <a href="contact.html" class="nav__link nav__link--contact">Contact</a>
+        <a href="/" class="nav__link nav__link--home is-current">Home</a>
+        <a href="/capabilities" class="nav__link nav__link--capabilities">Capabilities</a>
+        <a href="/portfolio" class="nav__link nav__link--portfolio">Portfolio</a>
+        <a href="/partnerships" class="nav__link nav__link--partnerships">Partnerships</a>
+        <a href="/contact" class="nav__link nav__link--contact">Contact</a>
       </div>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
@@ -37,57 +37,51 @@
   <!-- MOBILE MENU OVERLAY -->
   <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
     <div class="menu__head">
-      <div class="brand">Kissmyapps.dev</div>
+      <div class="brand">Kissmyapps<span class="brand__tld">.dev</span></div>
       <button class="menu__close" id="menuClose" aria-label="Close menu">✕</button>
     </div>
     <div class="menu__links">
-      <a href="index.html" class="menu__link menu__link--home">Home</a>
-      <a href="capabilities.html" class="menu__link menu__link--capabilities">Capabilities</a>
-      <a href="portfolio.html" class="menu__link menu__link--portfolio">Portfolio</a>
-      <a href="partnerships.html" class="menu__link menu__link--partnerships">Partnerships</a>
-      <a href="contact.html" class="menu__link menu__link--contact">Contact</a>
+      <a href="/" class="menu__link menu__link--home">Home</a>
+      <a href="/capabilities" class="menu__link menu__link--capabilities">Capabilities</a>
+      <a href="/portfolio" class="menu__link menu__link--portfolio">Portfolio</a>
+      <a href="/partnerships" class="menu__link menu__link--partnerships">Partnerships</a>
+      <a href="/contact" class="menu__link menu__link--contact">Contact</a>
     </div>
   </div>
 
   <!-- HERO -->
   <header class="hero">
-    <div class="hero__proof hw" style="--d: 0s">★ 4.8 avg rating&nbsp;&nbsp;·&nbsp;&nbsp;3 apps live&nbsp;&nbsp;·&nbsp;&nbsp;80k+ downloads</div>
+    <div class="hero__proof hw" style="--d: 0s">★ 4.8 avg rating&nbsp;&nbsp;·&nbsp;&nbsp;3 apps live&nbsp;&nbsp;·&nbsp;&nbsp;80K+ downloads</div>
 
     <h1 class="hero__title">
       <span class="hw" style="--d: 0.1s">Your</span>
       <span class="hw" style="--d: 0.2s">full-cycle</span>
-      <span class="chip chip--phone hw" style="--d: 0.3s" aria-hidden="true">
-        <span class="chip__phone">
-          <span></span>
-          <span></span>
-        </span>
-      </span>
-      <span class="hw" style="--d: 0.4s">iOS</span>
-      <span class="hw" style="--d: 0.5s">app</span>
-      <span class="hw hero__daily" style="--d: 0.6s">partner
+      <span class="hw" style="--d: 0.3s">iOS</span>
+      <span class="hw" style="--d: 0.4s">app</span>
+      <span class="hw hero__daily" style="--d: 0.5s">partner.
         <svg class="doodle doodle--ellipse" viewBox="0 0 140 70" aria-hidden="true">
-          <ellipse cx="70" cy="35" rx="62" ry="26" fill="none" stroke="#ff80bf" stroke-width="3" stroke-linecap="round" transform="rotate(-3 70 35)"></ellipse>
-          <ellipse cx="70" cy="36" rx="58" ry="23" fill="none" stroke="#ff80bf" stroke-width="2.5" stroke-linecap="round" transform="rotate(2 70 36)"></ellipse>
+          <ellipse cx="70" cy="35" rx="62" ry="26" fill="none" stroke="#ff80bf" stroke-linecap="round" transform="rotate(-3 70 35)"></ellipse>
+          <ellipse cx="70" cy="36" rx="58" ry="23" fill="none" stroke="#ff80bf" stroke-linecap="round" transform="rotate(2 70 36)"></ellipse>
         </svg>
-      </span>
-      <span class="chip chip--rocket hw" style="--d: 0.7s" aria-hidden="true">
-        <span class="chip__rocket">
-          <span class="chip__rocket-body"></span>
-          <span class="chip__rocket-flame"></span>
-        </span>
       </span>
     </h1>
 
-    <p class="hero__sub hw" style="--d: 0.9s">From product analysis and development to launch, monetization and growth — we work with iOS apps as an embedded partner, not a disconnected vendor.</p>
+    <p class="hero__sub hw" style="--d: 0.7s">From product analysis and development to launch, monetization and growth — we work with iOS apps as an embedded partner, not a disconnected vendor.</p>
+
+    <div class="hero__float" aria-hidden="true">
+      <div class="hf hf--coin hw" style="--d: 0.8s"><span></span></div>
+      <div class="hf hf--plant hw" style="--d: 0.95s"><span></span></div>
+      <div class="hf hf--doc hw" style="--d: 1.1s"><span></span></div>
+    </div>
 
     <svg class="doodle doodle--arrow" viewBox="0 0 140 100" aria-hidden="true">
       <path d="M14,88 Q30,30 96,26" fill="none" stroke="#58d65e" stroke-width="5" stroke-linecap="round"></path>
       <path d="M82,12 L100,26 L80,40" fill="none" stroke="#58d65e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
 
-    <div class="hero__actions hw" style="--d: 1.2s">
-      <a href="partnerships.html" class="btn btn--hero" style="width: auto; padding: 0 48px;">Discuss a Partnership</a>
-      <a href="portfolio.html" class="btn btn--secondary">View Our Apps</a>
+    <div class="hero__actions hw" style="--d: 1s">
+      <a href="/partnerships" class="btn btn--hero" style="width: auto; padding: 0 40px;">Discuss a partnership&nbsp;↗</a>
+      <a href="/portfolio" class="btn btn--secondary">View our apps</a>
     </div>
   </header>
 
@@ -134,7 +128,7 @@
   </section>
 
   <!-- WAYS TO WORK TOGETHER -->
-  <section class="services" style="padding-top: 0;">
+  <section class="services">
     <div class="section-label" data-reveal>Ways to work together</div>
     <p class="services__intro" data-reveal data-delay="150">Join at any stage — a <span style="color: #ffea30;">napkin idea</span>, a live app that's <span style="color: #66ccff;">stuck</span>, or a product ready to <span style="color: #58d65e;">scale</span>.</p>
     <div class="services__grid">
@@ -172,7 +166,7 @@
     <div class="stats__grid">
 
       <div class="stat stat--pink" data-reveal data-delay="0">
-        <div class="stat__num">80k+</div>
+        <div class="stat__num">80K+</div>
         <div class="stat__caption">downloads on the App Store</div>
         <div class="stat__art stat__art--pink" aria-hidden="true">
           <div style="top: 52px; left: 48px; width: 10px; height: 10px;"></div>
@@ -182,8 +176,8 @@
       </div>
 
       <div class="stat stat--blue" data-reveal data-delay="600">
-        <div class="stat__num">03</div>
-        <div class="stat__caption">apps designed, built &amp; operated end to end</div>
+        <div class="stat__num">20+</div>
+        <div class="stat__caption">apps launched and operated end to end</div>
         <div class="stat__art stat__art--blue-a" aria-hidden="true"></div>
         <div class="stat__art stat__art--blue-b" aria-hidden="true"></div>
       </div>
@@ -217,7 +211,6 @@
       <span class="chip-tag" style="background: #ffea30; color: #5c5410;">Apple Search Ads &amp; Meta Ads</span>
       <span class="chip-tag" style="background: #66ccff; color: #336680;">Ongoing growth experiments</span>
     </div>
-    <a href="capabilities.html" class="btn btn--secondary" data-reveal data-delay="300" style="height: 64px;">Explore capabilities</a>
   </section>
 
   <!-- PORTFOLIO PREVIEW: PINNED HORIZONTAL GALLERY -->
@@ -249,8 +242,8 @@
               </div>
               <div class="card__body">
                 <h3 class="card__title" style="color: #ffea30;">Coin Flip</h3>
-                <div class="card__meta">Utility · 50k downloads</div>
-                <p class="card__blurb">The fastest way to settle any decision — flip, done.</p>
+                <div class="card__meta">Utility · 50K downloads</div>
+                <p class="card__blurb">The fastest way to identify any coin and discover its value.</p>
                 <div class="card__stores">
                   <a href="#" target="_blank" rel="noopener noreferrer" class="pill" style="background: #66ccff; color: #336680; --pill-hover: #9ce0ff; text-decoration: none;"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Download on the App Store</a>
                 </div>
@@ -286,9 +279,9 @@
                 </div>
               </div>
               <div class="card__body">
-                <h3 class="card__title" style="color: #58d65e;">Plant Radar</h3>
+                <h3 class="card__title" style="color: #58d65e;">Plant This</h3>
                 <div class="card__meta">Productivity</div>
-                <p class="card__blurb">Watering schedules and care reminders that keep plants alive.</p>
+                <p class="card__blurb">Smart care reminders that help every plant thrive.</p>
                 <div class="card__stores">
                   <a href="#" target="_blank" rel="noopener noreferrer" class="pill" style="background: #ff80bf; color: #804060; --pill-hover: #ffabd6; text-decoration: none;"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Download on the App Store</a>
                 </div>
@@ -320,9 +313,9 @@
                 </div>
               </div>
               <div class="card__body">
-                <h3 class="card__title" style="color: #66ccff;">PDF Scanner</h3>
-                <div class="card__meta">Utility · 30k downloads</div>
-                <p class="card__blurb">Scan, edit and share documents straight from your pocket.</p>
+                <h3 class="card__title" style="color: #66ccff;">Scan PDF</h3>
+                <div class="card__meta">Utility · 30K downloads</div>
+                <p class="card__blurb">Scan, edit and share PDFs straight from your pocket.</p>
                 <div class="card__stores">
                   <a href="#" target="_blank" rel="noopener noreferrer" class="pill" style="background: #657fff; color: #ffffff; --pill-hover: #8b9fff; text-decoration: none;"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Download on the App Store</a>
                 </div>
@@ -342,7 +335,7 @@
       <div style="flex: 1 1 480px; min-width: 280px;">
         <h2>Not just a vendor</h2>
         <p>We partner with selected iOS apps where our product, development, monetization and growth capabilities can create long-term value.</p>
-        <a href="partnerships.html" class="btn btn--onviolet">Partner With Us</a>
+        <a href="/partnerships" class="btn btn--onviolet">Partner with us</a>
       </div>
     </div>
   </section>
@@ -368,32 +361,28 @@
       <h2 data-reveal>Let's build something!</h2>
       <p data-reveal data-delay="200">One partner from analysis to revenue. Tell us where your app is today.</p>
       <div class="contact__cta" data-reveal data-delay="400">
-        <a href="contact.html" class="btn btn--contact">Contact Us</a>
+        <a href="/contact" class="btn btn--contact">Contact us</a>
         <span class="contact__email">hello@kissmyapps.dev</span>
       </div>
     </section>
 
     <footer class="footer">
-      <div class="brand brand--footer">Kissmyapps.dev</div>
+      <div class="brand brand--footer">Kissmyapps<span class="brand__tld">.dev</span></div>
       <div class="footer__nav">
-        <a href="index.html">Home</a>
-        <a href="capabilities.html">Capabilities</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="partnerships.html">Partnerships</a>
-        <a href="contact.html">Contact</a>
+        <a href="/">Home</a>
+        <a href="/capabilities">Capabilities</a>
+        <a href="/portfolio">Portfolio</a>
+        <a href="/partnerships">Partnerships</a>
+        <a href="/contact">Contact</a>
       </div>
       <div class="footer__meta">
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">X</a>
         <span>© 2026 Kissmyapps.dev</span>
       </div>
     </footer>
     <div class="footer__legal">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms and Conditions</a>
-      <a href="resume.html">Résumé</a>
-      <span>[Legal entity details — company name, registration number, address]</span>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms and Conditions</a>
+      <span>1170 Harwood St, Vancouver, BC V6E 1R8</span>
     </div>
   </div>
 
