@@ -42,11 +42,11 @@
   });
 
   /* ---- forms (contact + partnership) ----
-     Paste a Formspree/Basin endpoint (e.g. https://formspree.io/f/xxxx) into
-     FORM_ENDPOINT to submit via AJAX. While empty, submissions fall back to
-     opening a pre-filled email to CONTACT_EMAIL — forms still work day one. */
+     Submissions POST to the self-hosted PHP endpoint, which emails
+     CONTACT_EMAIL. If the endpoint is unreachable, we fall back to opening
+     a pre-filled email in the visitor's mail app. */
 
-  var FORM_ENDPOINT = '';
+  var FORM_ENDPOINT = '/send-mail.php';
   var CONTACT_EMAIL = 'hello@kissmyapps.dev';
 
   function showStatus(form, ok, text) {
@@ -55,6 +55,20 @@
     status.textContent = text;
     status.classList.remove('form__status--ok', 'form__status--err');
     status.classList.add(ok ? 'form__status--ok' : 'form__status--err');
+  }
+
+  function mailtoFallback(form, kind, data) {
+    var subject = (kind === 'partnership' ? 'Partnership enquiry' : 'Contact') +
+      (data.app_name || data.company_or_app ? ' — ' + (data.app_name || data.company_or_app) : '');
+    var body = Object.keys(data).filter(function (k) {
+      return k !== '_form';
+    }).map(function (k) {
+      return k.replace(/_/g, ' ') + ': ' + data[k];
+    }).join('\n');
+    window.location.href = 'mailto:' + CONTACT_EMAIL +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+    showStatus(form, true, "Your email app should open with everything pre-filled — just hit send. Nothing opened? Email us at " + CONTACT_EMAIL + ".");
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('form[data-form]'), function (form) {
@@ -69,7 +83,7 @@
       }
 
       var kind = form.getAttribute('data-form');
-      var data = {};
+      var data = { _form: kind };
       Array.prototype.forEach.call(form.elements, function (el) {
         if (el.name && el.name !== '_gotcha') data[el.name] = el.value;
       });
@@ -77,16 +91,7 @@
       var submitBtn = form.querySelector('.form__submit');
 
       if (!FORM_ENDPOINT) {
-        // mailto fallback: open a pre-filled email in the visitor's mail app
-        var subject = (kind === 'partnership' ? 'Partnership enquiry' : 'Contact') +
-          (data.app_name || data.company_or_app ? ' — ' + (data.app_name || data.company_or_app) : '');
-        var body = Object.keys(data).map(function (k) {
-          return k.replace(/_/g, ' ') + ': ' + data[k];
-        }).join('\n');
-        window.location.href = 'mailto:' + CONTACT_EMAIL +
-          '?subject=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(body);
-        showStatus(form, true, "Your email app should open with everything pre-filled — just hit send. Nothing opened? Email us at " + CONTACT_EMAIL + ".");
+        mailtoFallback(form, kind, data);
         return;
       }
 
@@ -100,7 +105,8 @@
         form.reset();
         showStatus(form, true, "Got it — thanks! We'll reply within two business days.");
       }).catch(function () {
-        showStatus(form, false, "Something went wrong sending the form. Please email us directly at " + CONTACT_EMAIL + ".");
+        // endpoint unreachable (e.g. static-only host) — open the mail app instead
+        mailtoFallback(form, kind, data);
       }).finally(function () {
         submitBtn.disabled = false;
       });

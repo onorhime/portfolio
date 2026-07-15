@@ -14,6 +14,7 @@ done
 
 cp -R css js dist-fozzy/
 cp favicon.svg favicon-32.png apple-touch-icon.png dist-fozzy/
+cp send-mail.php dist-fozzy/
 cp hosting/.htaccess dist-fozzy/.htaccess
 
 (cd dist-fozzy && zip -qr ../kissmyapps-fozzy.zip .)
