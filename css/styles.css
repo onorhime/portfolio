@@ -1841,6 +1841,17 @@ body {
 
 /* secondary + submit + store buttons */
 
+.btn--book {
+  margin-top: 36px;
+  height: 72px;
+  padding: 0 44px;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 22px;
+}
+.btn--book:hover { background: #8b9fff; }
+.btn--book:active { background: #4c5fbf; }
+
 .btn--secondary {
   height: 80px;
   padding: 0 44px;
@@ -2387,6 +2398,15 @@ body {
     height: 48px;
     border-radius: 12px;
     padding: 0;
+  }
+
+  .btn--book {
+    width: 100%;
+    height: 56px;
+    border-radius: 12px;
+    padding: 0;
+    font-size: 18px;
+    box-sizing: border-box;
   }
 
   .hero__actions {

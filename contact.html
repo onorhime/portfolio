@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
 
@@ -53,6 +54,8 @@
   <header class="page-head">
     <h1>Tell us about <span style="color: #ff80bf;">your app</span></h1>
     <p>Analysis, development, growth or a partnership — describe where your app is today and we'll reply within two business days. Or email us directly at <a href="mailto:hello@kissmyapps.dev" style="color: #ffffff;">hello@kissmyapps.dev</a>.</p>
+    <!-- Calendly popup — swap the URL here and in the script below to point at a different event -->
+    <a href="https://calendly.com/palmanncode/new-meeting" id="bookCall" class="btn btn--book" target="_blank" rel="noopener noreferrer">📅&nbsp;&nbsp;Book a discovery call</a>
   </header>
 
   <!-- CONTACT FORM -->
@@ -138,5 +141,15 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script>
+    // popup when Calendly has loaded; plain new-tab link otherwise
+    document.getElementById('bookCall').addEventListener('click', function (e) {
+      if (window.Calendly) {
+        e.preventDefault();
+        Calendly.initPopupWidget({ url: 'https://calendly.com/palmanncode/new-meeting' });
+      }
+    });
+  </script>
 </body>
 </html>
