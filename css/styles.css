@@ -334,10 +334,16 @@ body {
 .hero__title {
   margin: 0;
   font-weight: 800;
-  font-size: clamp(34px, 4.4vw, 48px);
-  line-height: 1.78;
-  max-width: 1000px;
+  font-size: clamp(37px, 4.9vw, 53px);
+  line-height: 1.7;
+  max-width: 1100px;
   letter-spacing: -0.5px;
+}
+
+@media (min-width: 1100px) {
+  .hero {
+    padding-left: 72px;
+  }
 }
 
 .hero__daily {
@@ -458,73 +464,21 @@ body {
   to { stroke-dashoffset: 0; }
 }
 
-.doodle--arrow {
+/* single quiet decoration: an oversized thin outline circle bleeding off-canvas */
+
+.hero__ring {
   position: absolute;
-  right: 19%;
-  top: 34%;
-  width: 120px;
-}
-
-/* floating app-icon composition the arrow points at */
-
-.hero__float {
-  position: absolute;
-  right: 5%;
-  top: 15%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.hf {
-  width: 76px;
-  height: 76px;
-  border-radius: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hf--coin {
-  background: var(--yellow);
-  transform: rotate(-8deg);
-}
-
-.hf--coin span {
-  width: 34px;
-  height: 34px;
+  right: -160px;
+  top: 8%;
+  width: 580px;
+  height: 580px;
   border-radius: 50%;
-  background: var(--yellow-dark);
-}
-
-.hf--plant {
-  background: var(--green);
-  transform: rotate(6deg);
-  margin-left: 36px;
-}
-
-.hf--plant span {
-  width: 14px;
-  height: 32px;
-  border-radius: 8px 8px 3px 3px;
-  background: var(--green-dark);
-}
-
-.hf--doc {
-  background: var(--lblue);
-  transform: rotate(-4deg);
-}
-
-.hf--doc span {
-  width: 26px;
-  height: 34px;
-  border-radius: 5px;
-  background: var(--lblue-dark);
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
 }
 
 @media (max-width: 1099px) {
-  .hero__float,
-  .doodle--arrow {
+  .hero__ring {
     display: none;
   }
 }
@@ -1305,35 +1259,10 @@ body {
   margin: 0 auto;
 }
 
-/* CSS heart: two circles + rotated square */
 .sharing__heart {
-  position: relative;
-  width: 180px;
-  height: 160px;
-}
-
-.sharing__heart span:nth-child(1),
-.sharing__heart span:nth-child(2) {
-  position: absolute;
-  top: 0;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: var(--green-dark);
-}
-
-.sharing__heart span:nth-child(1) { left: 0; }
-.sharing__heart span:nth-child(2) { right: 0; }
-
-.sharing__heart span:nth-child(3) {
-  position: absolute;
-  left: 50%;
-  top: 34px;
-  width: 96px;
-  height: 96px;
-  background: var(--green-dark);
-  transform: translateX(-50%) rotate(45deg);
-  border-radius: 12px;
+  display: block;
+  width: 190px;
+  height: 180px;
 }
 
 /* ---- proof marquee ---- */
@@ -1520,9 +1449,16 @@ body {
     margin-top: 28px;
   }
 
+  /* capability chips: one per row, desktop order preserved */
+  .resume__chips {
+    flex-direction: column;
+  }
+
   .chip-tag {
-    padding: 10px 14px;
-    font-size: 13px;
+    padding: 14px 18px;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* gallery: static section with native swipe */
@@ -1889,7 +1825,7 @@ body {
   font-weight: 400;
   line-height: 1.55;
   color: #a9a9ae;
-  max-width: 640px;
+  max-width: 700px;
 }
 
 .store-btn {
@@ -1961,16 +1897,22 @@ body {
   margin-bottom: 48px;
 }
 
-.cycle__strip {
+.cycle__row {
   display: flex;
+  justify-content: center;
   gap: 16px;
   align-items: stretch;
   flex-wrap: wrap;
 }
 
+.cycle__row + .cycle__row {
+  margin-top: 16px;
+}
+
 .cycle__step {
-  flex: 1 1 200px;
-  min-width: 200px;
+  flex: 0 0 auto;
+  width: 310px;
+  min-height: 200px;
   border-radius: 24px;
   padding: 28px 24px;
   box-sizing: border-box;
@@ -2000,7 +1942,7 @@ body {
   align-self: center;
   font-size: 34px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.7);
   flex: 0 0 auto;
 }
 
@@ -2429,7 +2371,12 @@ body {
   }
 
   .cycle__step {
-    flex-basis: 100%;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .cycle__row + .cycle__row {
+    margin-top: 16px;
   }
 
   .cap-preview,
