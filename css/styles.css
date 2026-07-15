@@ -464,24 +464,6 @@ body {
   to { stroke-dashoffset: 0; }
 }
 
-/* single quiet decoration: an oversized thin outline circle bleeding off-canvas */
-
-.hero__ring {
-  position: absolute;
-  right: -160px;
-  top: 8%;
-  width: 580px;
-  height: 580px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.07);
-  pointer-events: none;
-}
-
-@media (max-width: 1099px) {
-  .hero__ring {
-    display: none;
-  }
-}
 
 .hero__cta {
   margin-top: 64px;
