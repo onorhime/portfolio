@@ -1,0 +1,47 @@
+name: Deploy to Fozzy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-fozzy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check deploy target configured
+        id: check
+        run: |
+          if [ -z "${{ vars.FOZZY_SSH_HOST }}" ]; then
+            echo "::notice::FOZZY_SSH_HOST repo variable is not set — skipping deploy."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build bundle
+        if: steps.check.outputs.configured == 'true'
+        run: bash hosting/build-fozzy.sh
+
+      - name: Set up SSH key
+        if: steps.check.outputs.configured == 'true'
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.FOZZY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Rsync site to public_html
+        if: steps.check.outputs.configured == 'true'
+        run: |
+          rsync -rlptvz --delete \
+            --exclude '.well-known' \
+            --exclude 'cgi-bin' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.FOZZY_SSH_PORT }} -o StrictHostKeyChecking=accept-new" \
+            dist-fozzy/ \
+            "${{ vars.FOZZY_SSH_USER }}@${{ vars.FOZZY_SSH_HOST }}:${{ vars.FOZZY_DEPLOY_PATH }}/"
