@@ -1,0 +1,43 @@
+# kissmyapps.dev — Apache/LiteSpeed config for Fozzy shared hosting
+# Replicates the Vercel behavior: clean URLs, .html redirects, HTTPS, apex canonical.
+
+Options -MultiViews -Indexes
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# force HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# canonicalize www -> apex
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+# /index.html -> /
+RewriteCond %{THE_REQUEST} \s/index\.html[?\s] [NC]
+RewriteRule ^ / [R=301,L]
+
+# /page.html -> /page  (keeps old links working)
+RewriteCond %{THE_REQUEST} \s/([^.?\s]+)\.html[?\s] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# serve /page from page.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*?)/?$ $1.html [L]
+
+# design sources are excluded from the bundle, but block them anyway
+<FilesMatch "^(Portfolio\.dc\.html|support\.js)$">
+  Require all denied
+</FilesMatch>
+
+# modest caching for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+</IfModule>
