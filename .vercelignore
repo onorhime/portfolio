@@ -1,3 +1,5 @@
 # design source files — not part of the live site
 Portfolio.dc.html
 support.js
+# PHP only runs on Fozzy — 404 on Vercel triggers the mailto fallback
+send-mail.php
