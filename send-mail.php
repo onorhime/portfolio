@@ -1,7 +1,12 @@
 <?php
 // kissmyapps.dev — form handler (contact + partnership forms post JSON here)
+// Delivers via SMTP to localhost: the same path external mail takes, which is
+// verified to reach the hello@ mailbox (PHP mail()'s sendmail submission
+// routes through MX lookups and is unreliable on this host).
 declare(strict_types=1);
 header('Content-Type: application/json');
+
+const MAILBOX = 'hello@kissmyapps.dev';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   http_response_code(405);
@@ -50,14 +55,55 @@ $body = implode("\n", $lines)
   . "\n\n— " . $kind . ', sent ' . gmdate('Y-m-d H:i \U\T\C')
   . ' from ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown IP');
 
-$headers = implode("\r\n", [
-  'From: KissMyApps Website <forms@kissmyapps.dev>',
-  'Reply-To: ' . $email,
-  'MIME-Version: 1.0',
-  'Content-Type: text/plain; charset=UTF-8',
-]);
+function smtp_send(string $to, string $subject, string $body, string $replyTo): bool
+{
+  $fp = @fsockopen('localhost', 25, $errno, $errstr, 10);
+  if (!$fp) {
+    return false;
+  }
 
-if (mail('hello@kissmyapps.dev', $subject, $body, $headers)) {
+  $read = static function () use ($fp): string {
+    $r = '';
+    while (($l = fgets($fp, 512)) !== false) {
+      $r .= $l;
+      if (strlen($l) < 4 || $l[3] !== '-') {
+        break;
+      }
+    }
+    return $r;
+  };
+  $cmd = static function (string $c, array $okCodes) use ($fp, $read): bool {
+    fwrite($fp, $c . "\r\n");
+    return in_array((int) substr($read(), 0, 3), $okCodes, true);
+  };
+
+  $read(); // banner
+  $helo = gethostname() ?: 'localhost.localdomain'; // exim requires an FQDN here
+  $ok = $cmd('EHLO ' . $helo, [250])
+    && $cmd('MAIL FROM:<' . MAILBOX . '>', [250])
+    && $cmd('RCPT TO:<' . $to . '>', [250, 251])
+    && $cmd('DATA', [354]);
+
+  if ($ok) {
+    $headers = 'From: KissMyApps Website <' . MAILBOX . '>' . "\r\n"
+      . 'To: <' . $to . '>' . "\r\n"
+      . 'Reply-To: ' . $replyTo . "\r\n"
+      . 'Subject: ' . $subject . "\r\n"
+      . 'Date: ' . date('r') . "\r\n"
+      . 'MIME-Version: 1.0' . "\r\n"
+      . 'Content-Type: text/plain; charset=UTF-8' . "\r\n";
+    // normalize newlines for SMTP and dot-stuff leading periods
+    $payload = str_replace("\n", "\r\n", str_replace(["\r\n", "\r"], "\n", $body));
+    $payload = preg_replace('/^\./m', '..', $payload);
+    $ok = $cmd($headers . "\r\n" . $payload . "\r\n.", [250]);
+  }
+
+  $cmd('QUIT', [221]);
+  fclose($fp);
+  return $ok;
+}
+
+if (smtp_send(MAILBOX, $subject, $body, $email)) {
   echo json_encode(['ok' => true]);
 } else {
   http_response_code(500);
