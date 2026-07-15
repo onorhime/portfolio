@@ -1092,6 +1092,13 @@ body {
   overflow: hidden;
 }
 
+/* fixed-coordinate art stage: identical to the visual box on desktop,
+   centered and scaled down on mobile so compositions never clip */
+.row__stage {
+  position: absolute;
+  inset: 0;
+}
+
 .row__visual--bars {
   display: flex;
   align-items: flex-end;
@@ -1524,6 +1531,38 @@ body {
   .row--reverse {
     flex-direction: column-reverse;
     align-items: stretch;
+  }
+
+  /* Build art: keep the desktop composition, smaller and dead-centered */
+  .row__visual--build .row__stage {
+    inset: auto;
+    width: 420px;
+    height: 340px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+
+  /* Launch pipeline: smaller pieces so every node stays inside the card */
+  .pipe__node,
+  .pipe__check {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pipe__check {
+    border-radius: 12px;
+    font-size: 18px;
+  }
+
+  .pipe__link {
+    width: 32px;
+    height: 8px;
+  }
+
+  .row__visual--pipeline {
+    padding: 0 16px;
+    box-sizing: border-box;
   }
 
   .services {
