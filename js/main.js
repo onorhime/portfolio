@@ -20,6 +20,7 @@
   var menuClose = document.getElementById('menuClose');
 
   function openMenu() {
+    if (!menu) return;
     menu.hidden = false;
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
@@ -27,19 +28,22 @@
   }
 
   function closeMenu() {
-    if (menu.hidden) return;
+    if (!menu || menu.hidden) return;
     menu.hidden = true;
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     burger.focus();
   }
 
-  burger.addEventListener('click', openMenu);
-  menuClose.addEventListener('click', closeMenu);
+  // pages like the coin partner subdomain have no burger nav
+  if (menu && burger && menuClose) {
+    burger.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !menu.hidden) closeMenu();
-  });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !menu.hidden) closeMenu();
+    });
+  }
 
   /* ---- forms (contact + partnership) ----
      Submissions POST to the self-hosted PHP endpoint, which emails

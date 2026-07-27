@@ -2458,6 +2458,188 @@ body {
   }
 }
 
+/* ==========================================================================
+   Coin partner page components
+   ========================================================================== */
+
+/* animated elements inside a page-head stack vertically, not inline */
+.page-head .hw {
+  display: block;
+}
+
+.page-head .hero__actions.hw {
+  display: flex;
+}
+
+/* eyebrow above hero h1 */
+.page-eyebrow {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 20px;
+}
+
+/* dark data tables (partnership models, pilot framework) */
+.tbl-wrap {
+  overflow-x: auto;
+  border-radius: 24px;
+  background: var(--card);
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.tbl--narrow {
+  min-width: 520px;
+}
+
+.tbl th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tbl td {
+  padding: 20px 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+}
+
+.tbl tr:last-child td {
+  border-bottom: none;
+}
+
+.tbl td:first-child {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.tbl .rev {
+  font-size: 22px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* green checklist */
+.checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 720px;
+}
+
+.checks li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 14px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.checks li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: var(--green);
+  color: var(--green-dark);
+  font-weight: 800;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* bullet lists inside colored cards */
+.svc-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svc-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.svc-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 5px;
+  border-radius: 3px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* funnel flow strip */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.flow__step {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.flow__arrow {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 800;
+  font-size: 22px;
+}
+
+/* quiet footnote text */
+.note {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 680px;
+}
+
+@media (max-width: 859px) {
+  .checks li {
+    font-size: 16px;
+  }
+
+  .flow__step {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .flow__arrow {
+    display: none;
+  }
+}
+
 /* ---- reduced motion ---- */
 
 @media (prefers-reduced-motion: reduce) {

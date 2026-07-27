@@ -39,8 +39,15 @@ if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
   exit;
 }
 
-$kind = (($data['_form'] ?? '') === 'partnership') ? 'Partnership enquiry' : 'Contact form';
-$ref  = $clean($data['app_name'] ?? ($data['company_or_app'] ?? ''));
+$formKind = (string) ($data['_form'] ?? '');
+if ($formKind === 'partnership') {
+  $kind = 'Partnership enquiry';
+} elseif ($formKind === 'coin-partner') {
+  $kind = 'Coin Flip partner application';
+} else {
+  $kind = 'Contact form';
+}
+$ref = $clean($data['app_name'] ?? ($data['company_or_app'] ?? ($data['channel_name'] ?? '')));
 $subject = $kind . ($ref !== '' ? ' — ' . $ref : '') . ' · kissmyapps.dev';
 
 $lines = [];
