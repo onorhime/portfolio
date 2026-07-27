@@ -46,12 +46,14 @@ jobs:
             dist-fozzy/ \
             "${{ vars.FOZZY_SSH_USER }}@${{ vars.FOZZY_SSH_HOST }}:${{ vars.FOZZY_DEPLOY_PATH }}/"
 
-      - name: Rsync coin partner page to subdomain
+      - name: Rsync partner pages to subdomains
         if: steps.check.outputs.configured == 'true'
         run: |
-          rsync -rlptvz --delete \
-            --exclude '.well-known' \
-            --exclude 'cgi-bin' \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.FOZZY_SSH_PORT }} -o StrictHostKeyChecking=accept-new" \
-            dist-coin/ \
-            "${{ vars.FOZZY_SSH_USER }}@${{ vars.FOZZY_SSH_HOST }}:/home/${{ vars.FOZZY_SSH_USER }}/domains/coin.kissmyapps.dev/public_html/"
+          for sub in coin plant; do
+            rsync -rlptvz --delete \
+              --exclude '.well-known' \
+              --exclude 'cgi-bin' \
+              -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.FOZZY_SSH_PORT }} -o StrictHostKeyChecking=accept-new" \
+              "dist-$sub/" \
+              "${{ vars.FOZZY_SSH_USER }}@${{ vars.FOZZY_SSH_HOST }}:/home/${{ vars.FOZZY_SSH_USER }}/domains/$sub.kissmyapps.dev/public_html/"
+          done

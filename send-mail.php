@@ -44,6 +44,8 @@ if ($formKind === 'partnership') {
   $kind = 'Partnership enquiry';
 } elseif ($formKind === 'coin-partner') {
   $kind = 'Coin Flip partner application';
+} elseif ($formKind === 'plant-partner') {
+  $kind = 'Plant This partner application';
 } else {
   $kind = 'Contact form';
 }

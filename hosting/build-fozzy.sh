@@ -6,8 +6,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-rm -rf dist-fozzy dist-coin kissmyapps-fozzy.zip
-mkdir -p dist-fozzy dist-coin
+rm -rf dist-fozzy dist-coin dist-plant kissmyapps-fozzy.zip
+mkdir -p dist-fozzy
 
 # --- main site ---
 for page in index capabilities portfolio partnerships contact privacy terms resume; do
@@ -21,13 +21,18 @@ cp hosting/.htaccess dist-fozzy/.htaccess
 
 (cd dist-fozzy && zip -qr ../kissmyapps-fozzy.zip .)
 
-# --- coin partner subdomain (self-contained bundle) ---
-cp coin/index.html dist-coin/
-cp -R css js dist-coin/
-cp favicon.svg favicon-32.png apple-touch-icon.png dist-coin/
-cp send-mail.php dist-coin/
-cp hosting/coin.htaccess dist-coin/.htaccess
+# --- partner subdomains (self-contained bundles) ---
+for sub in coin plant; do
+  rm -rf "dist-$sub"
+  mkdir -p "dist-$sub"
+  cp "$sub/index.html" "dist-$sub/"
+  cp -R css js "dist-$sub/"
+  cp favicon.svg favicon-32.png apple-touch-icon.png "dist-$sub/"
+  cp send-mail.php "dist-$sub/"
+  cp "hosting/$sub.htaccess" "dist-$sub/.htaccess"
+done
 
 echo "Bundles ready:"
-echo "  main: $(pwd)/dist-fozzy (+ kissmyapps-fozzy.zip)"
-echo "  coin: $(pwd)/dist-coin"
+echo "  main:  $(pwd)/dist-fozzy (+ kissmyapps-fozzy.zip)"
+echo "  coin:  $(pwd)/dist-coin"
+echo "  plant: $(pwd)/dist-plant"
