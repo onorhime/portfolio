@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Creator marketplace | KissMyApps</title>
+    <meta
+      name="description"
+      content="Find a program, read its commission terms, and choose which products to share."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="canonical" href="https://kissmyapps.dev/marketplace" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <div class="nav__inner">
+        <a href="/" style="text-decoration: none"
+          ><div class="brand">
+            Kissmyapps<span class="brand__tld">.dev</span>
+          </div></a
+        >
+        <div class="nav__pill">
+          <a
+            href="/marketplace"
+            class="nav__link nav__link--marketplace is-current"
+            aria-current="page"
+            >Marketplace</a
+          >
+          <a href="/merchants" class="nav__link nav__link--merchants"
+            >Merchants</a
+          >
+          <a href="/partners" class="nav__link nav__link--partners">Partners</a>
+          <a href="/integrations" class="nav__link nav__link--integrations"
+            >Integrations</a
+          >
+          <details class="studio-menu">
+            <summary>Studio</summary>
+            <div>
+              <a href="/" class="nav__link nav__link--home">Home</a>
+              <a href="/capabilities" class="nav__link nav__link--capabilities"
+                >Capabilities</a
+              >
+              <a href="/portfolio" class="nav__link nav__link--portfolio"
+                >Portfolio</a
+              >
+              <a href="/partnerships" class="nav__link nav__link--partnerships"
+                >Partnerships</a
+              >
+              <a href="/contact" class="nav__link nav__link--contact"
+                >Contact</a
+              >
+            </div>
+          </details>
+        </div>
+        <button
+          class="burger"
+          id="burger"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div
+      class="menu"
+      id="menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      hidden
+    >
+      <div class="menu__head">
+        <div class="brand">Kissmyapps<span class="brand__tld">.dev</span></div>
+        <button class="menu__close" id="menuClose" aria-label="Close menu">
+          ✕
+        </button>
+      </div>
+      <div class="menu__links">
+        <a href="/marketplace" class="menu__link menu__link--marketplace"
+          >Marketplace</a
+        >
+        <a href="/merchants" class="menu__link menu__link--merchants"
+          >Merchants</a
+        >
+        <a href="/partners" class="menu__link menu__link--partners">Partners</a>
+        <a href="/integrations" class="menu__link menu__link--integrations"
+          >Integrations</a
+        >
+        <a href="/" class="menu__link menu__link--home">Home</a>
+        <a href="/capabilities" class="menu__link menu__link--capabilities"
+          >Capabilities</a
+        >
+        <a href="/portfolio" class="menu__link menu__link--portfolio"
+          >Portfolio</a
+        >
+        <a href="/partnerships" class="menu__link menu__link--partnerships"
+          >Partnerships</a
+        >
+        <a href="/contact" class="menu__link menu__link--contact">Contact</a>
+      </div>
+    </div>
+
+    <main id="content" class="platform-page">
+      <header class="page-head tone-yellow">
+        <h1>Creator marketplace</h1>
+        <p>
+          Find a program, read its commission terms, and choose which products
+          to share.
+        </p>
+      </header>
+      <section class="platform-section" aria-labelledby="list-title">
+        <div class="platform-section-head">
+          <h2 id="list-title">Open programs</h2>
+          <button type="button" class="platform-link" id="reload-programs">
+            Refresh
+          </button>
+        </div>
+        <p id="market-status" role="status">Loading programs…</p>
+        <div id="program-list" class="platform-grid"></div>
+        <noscript
+          ><a href="https://partners.kissmyapps.dev/marketplace"
+            >Open the partner marketplace</a
+          ></noscript
+        >
+      </section>
+      <div class="platform-grid">
+        <article class="platform-card tone-green">
+          <h2>Have a product to list?</h2>
+          <p>
+            Set the reward, choose who can join, and submit your program for
+            review.
+          </p>
+          <a class="platform-link" href="/merchants"
+            >For merchants <span aria-hidden="true">↗</span></a
+          >
+        </article>
+        <article class="platform-card tone-pink">
+          <h2>New to affiliate programs?</h2>
+          <p>See how to apply, share a link and follow your earnings.</p>
+          <a class="platform-link" href="/partners"
+            >For creators <span aria-hidden="true">↗</span></a
+          >
+        </article>
+      </div>
+    </main>
+    <div class="wrap">
+      <footer class="footer" style="padding-top: 64px">
+        <div class="brand brand--footer">
+          Kissmyapps<span class="brand__tld">.dev</span>
+        </div>
+        <div class="footer__nav">
+          <a href="/marketplace">Marketplace</a
+          ><a href="/merchants">Merchants</a><a href="/partners">Partners</a
+          ><a href="/integrations">Integrations</a>
+          <a href="/">Home</a>
+          <a href="/capabilities">Capabilities</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/partnerships">Partnerships</a>
+          <a href="/contact">Contact</a>
+        </div>
+        <div class="footer__meta">
+          <span>© 2026 Kissmyapps.dev</span>
+        </div>
+      </footer>
+      <div class="footer__legal">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms and Conditions</a>
+        <span>1170 Harwood St, Vancouver, BC V6E 1R8</span>
+      </div>
+    </div>
+
+    <script defer src="/js/marketplace.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

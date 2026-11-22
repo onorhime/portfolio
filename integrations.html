@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Integration guides | KissMyApps</title>
+    <meta
+      name="description"
+      content="Connect a website or app, send a test event, and verify what reaches your merchant dashboard."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="canonical" href="https://kissmyapps.dev/integrations" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <div class="nav__inner">
+        <a href="/" style="text-decoration: none"
+          ><div class="brand">
+            Kissmyapps<span class="brand__tld">.dev</span>
+          </div></a
+        >
+        <div class="nav__pill">
+          <a href="/marketplace" class="nav__link nav__link--marketplace"
+            >Marketplace</a
+          >
+          <a href="/merchants" class="nav__link nav__link--merchants"
+            >Merchants</a
+          >
+          <a href="/partners" class="nav__link nav__link--partners">Partners</a>
+          <a
+            href="/integrations"
+            class="nav__link nav__link--integrations is-current"
+            aria-current="page"
+            >Integrations</a
+          >
+          <details class="studio-menu">
+            <summary>Studio</summary>
+            <div>
+              <a href="/" class="nav__link nav__link--home">Home</a>
+              <a href="/capabilities" class="nav__link nav__link--capabilities"
+                >Capabilities</a
+              >
+              <a href="/portfolio" class="nav__link nav__link--portfolio"
+                >Portfolio</a
+              >
+              <a href="/partnerships" class="nav__link nav__link--partnerships"
+                >Partnerships</a
+              >
+              <a href="/contact" class="nav__link nav__link--contact"
+                >Contact</a
+              >
+            </div>
+          </details>
+        </div>
+        <button
+          class="burger"
+          id="burger"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div
+      class="menu"
+      id="menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      hidden
+    >
+      <div class="menu__head">
+        <div class="brand">Kissmyapps<span class="brand__tld">.dev</span></div>
+        <button class="menu__close" id="menuClose" aria-label="Close menu">
+          ✕
+        </button>
+      </div>
+      <div class="menu__links">
+        <a href="/marketplace" class="menu__link menu__link--marketplace"
+          >Marketplace</a
+        >
+        <a href="/merchants" class="menu__link menu__link--merchants"
+          >Merchants</a
+        >
+        <a href="/partners" class="menu__link menu__link--partners">Partners</a>
+        <a href="/integrations" class="menu__link menu__link--integrations"
+          >Integrations</a
+        >
+        <a href="/" class="menu__link menu__link--home">Home</a>
+        <a href="/capabilities" class="menu__link menu__link--capabilities"
+          >Capabilities</a
+        >
+        <a href="/portfolio" class="menu__link menu__link--portfolio"
+          >Portfolio</a
+        >
+        <a href="/partnerships" class="menu__link menu__link--partnerships"
+          >Partnerships</a
+        >
+        <a href="/contact" class="menu__link menu__link--contact">Contact</a>
+      </div>
+    </div>
+
+    <main id="content" class="platform-page">
+      <header class="page-head tone-blue">
+        <h1>Integration guides</h1>
+        <p>
+          Connect a website or app, send a test event, and verify what reaches
+          your merchant dashboard.
+        </p>
+      </header>
+      <div class="integration-layout">
+        <nav aria-label="Integration guides" class="guide-nav">
+          <a href="#web">Website</a><a href="#react">React web</a
+          ><a href="#react-native">React Native / Expo</a
+          ><a href="#flutter">Flutter</a><a href="#ios">iOS</a
+          ><a href="#android">Android</a><a href="#server">Server events</a
+          ><a href="#stores">App store sales</a
+          ><a href="#attribution">Attribution and checkout</a
+          ><a href="#consent">Consent and privacy</a
+          ><a href="#network-reports">Ad network reports</a
+          ><a href="#journeys">Server funnels</a
+          ><a href="#verify">Verification</a>
+        </nav>
+        <div>
+          <section id="web" class="integration-guide">
+            <h2>Website</h2>
+            <p>
+              Create a merchant project and copy its test client key from
+              Settings. Load this snippet once, after the visitor grants any
+              required consent. Replace YOUR_PROJECT_TEST_KEY with that key.
+            </p>
+            <p>
+              Open a page and check Live events in the test environment for
+              page_viewed. Use the live client key when the test passes. Session
+              replay is available for websites.
+            </p>
+            <pre tabindex="0"><code>&lt;script&gt;
+  window.kma = window.kma || function () {
+    (window.kma.q = window.kma.q || []).push(arguments);
+  };
+&lt;/script&gt;
+&lt;script async src=&quot;https://merchant.kissmyapps.dev/sdk/kma.js&quot;
+        data-key=&quot;YOUR_PROJECT_TEST_KEY&quot;&gt;&lt;/script&gt;</code></pre>
+          </section>
+          <section id="react" class="integration-guide">
+            <h2>React for the web</h2>
+            <p>
+              Put the website snippet in the host HTML once. The web SDK records
+              client-side route changes. Send your product events from the
+              interaction that actually happened.
+            </p>
+            <p>
+              Click the button once and look for one plan_selected event in the
+              test project.
+            </p>
+            <pre tabindex="0"><code>export function ChoosePlan() {
+  return &lt;button onClick={() =&gt; window.kma?.(&#x27;track&#x27;, &#x27;plan_selected&#x27;, {plan: &#x27;annual&#x27;})}&gt;
+    Choose annual plan
+  &lt;/button&gt;;
+}</code></pre>
+          </section>
+          <section id="react-native" class="integration-guide">
+            <h2>React Native and Expo</h2>
+            <p>
+              Install the published analytics package and its storage peer.
+              Initialize once at app startup and send an event after
+              initialization. Expo apps can install AsyncStorage with npx expo
+              install.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>npm install @kissmyappss/react-native@1.0.0 @react-native-async-storage/async-storage
+
+// App.tsx
+import AsyncStorage from &#x27;@react-native-async-storage/async-storage&#x27;;
+import { KissMyApps } from &#x27;@kissmyappss/react-native&#x27;;
+KissMyApps.init({key: &#x27;YOUR_PROJECT_TEST_KEY&#x27;, storage: AsyncStorage});
+KissMyApps.track(&#x27;plan_selected&#x27;, {plan: &#x27;annual&#x27;});</code></pre>
+            <a
+              class="platform-link"
+              href="https://www.npmjs.com/package/@kissmyappss/react-native"
+              >Published package and API <span aria-hidden="true">↗</span></a
+            >
+          </section>
+          <section id="flutter" class="integration-guide">
+            <h2>Flutter</h2>
+            <p>
+              Add the published package to your Flutter app with flutter pub add
+              kissmyapps. Initialize after the Flutter bindings are available
+              and before runApp. Add KissMyAppsObserver to record named screens.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>import &#x27;package:flutter/widgets.dart&#x27;;
+import &#x27;package:kissmyapps/kissmyapps.dart&#x27;;
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  KissMyApps.start(&#x27;YOUR_PROJECT_TEST_KEY&#x27;);
+  runApp(const MyApp());
+}</code></pre>
+            <a class="platform-link" href="https://pub.dev/packages/kissmyapps"
+              >Published package and setup <span aria-hidden="true">↗</span></a
+            >
+          </section>
+          <section id="ios" class="integration-guide">
+            <h2>Native iOS</h2>
+            <p>
+              In Xcode, choose File → Add Package Dependencies. Add
+              https://github.com/onorhime/kissmyapps-mobile and select version
+              1.1.0. Link the KissMyApps product to your app target. Start once
+              in your app initializer.
+            </p>
+            <pre tabindex="0"><code>import KissMyApps
+
+KissMyApps.start(key: &quot;YOUR_PROJECT_TEST_KEY&quot;)
+KissMyApps.track(&quot;plan_selected&quot;, properties: [&quot;plan&quot;: &quot;annual&quot;])</code></pre>
+            <a
+              class="platform-link"
+              href="https://github.com/onorhime/kissmyapps-mobile/tree/1.1.0"
+              >Tagged iOS source and guide <span aria-hidden="true">↗</span></a
+            >
+          </section>
+          <section id="android" class="integration-guide">
+            <h2>Native Android</h2>
+            <p>
+              Add JitPack to dependencyResolutionManagement.repositories in
+              settings.gradle.kts, then add the dependency in the app module.
+              Start the SDK in Application.onCreate after super.onCreate().
+            </p>
+            <pre tabindex="0"><code>// settings.gradle.kts, inside repositories
+maven { url = uri(&quot;https://jitpack.io&quot;) }
+
+// app/build.gradle.kts, inside dependencies
+implementation(&quot;com.github.onorhime:kissmyapps-mobile:1.1.0&quot;)
+
+// Inside Application.onCreate()
+com.kissmyapps.KissMyApps.start(this, &quot;YOUR_PROJECT_TEST_KEY&quot;)</code></pre>
+            <a
+              class="platform-link"
+              href="https://github.com/onorhime/kissmyapps-mobile/tree/1.1.0"
+              >Tagged Android source and guide
+              <span aria-hidden="true">↗</span></a
+            >
+          </section>
+          <section id="server" class="integration-guide">
+            <h2>Server events and revenue</h2>
+            <p>
+              Create a test server key under Project settings → API keys. Keep
+              it in your server’s secret store. Use a stable internal customer
+              ID that matches the ID your app uses to identify the customer. For
+              an order, generate a unique insert ID that stays the same on
+              retries.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>curl https://events.kissmyapps.dev/v1/events \
+  -H "Authorization: Bearer ${KMA_TEST_SERVER_KEY}" \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":"fixture-customer","events":[{
+    "name":"purchase","insert_id":"fixture-payment-1042",
+    "properties":{"kma_revenue":20,"kma_currency":"USD",
+                  "kma_transaction_id":"fixture-order-1042"}
+  }]}'</code></pre>
+            <p>
+              Verify one purchase in the test event feed. For an analytics
+              refund, use a separate insert ID, the original transaction ID and
+              a negative amount. Verified program commissions use the connected
+              billing provider’s receipts.
+            </p>
+          </section>
+          <section id="stores" class="integration-guide">
+            <h2>App Store and Google Play sales</h2>
+            <p>
+              Under Connections, choose RevenueCat or Adapty. Copy that
+              workspace’s generated webhook URL and authentication details into
+              the provider’s integration settings. Identify users with the same
+              internal app user ID in both SDKs. Use the provider’s test
+              delivery first and look for a receipt under the connection.
+            </p>
+            <p>
+              For a program paying sale commission, test a purchase and refund
+              from the same store transaction. Look under Sales for the purchase
+              and refund, then compare the creator’s earnings. Earlier refunds
+              waiting for the original purchase appear under reconciliation
+              exceptions.
+            </p>
+          </section>
+          <section id="attribution" class="integration-guide">
+            <h2>Attribution and checkout</h2>
+            <p>
+              For a web program using your own Stripe checkout, obtain the
+              creator click from the initialized web SDK. Send it to your server
+              alongside the checkout request and attach it as metadata.kma_click
+              on the Stripe payment. Keep Stripe credentials server-side.
+            </p>
+            <p>
+              For hosted checkout, choose the product and price under Program,
+              then use the generated destination. For native store commissions,
+              connect RevenueCat or Adapty under Connections and use the same
+              stable app user ID when identifying the signed-in customer.
+            </p>
+            <p>
+              Flutter, Swift and Android 1.1.0 support install attribution, deep
+              links and revenue events. React Native 1.0.0 supports event
+              analytics. Follow the version-specific package guide for your
+              platform.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>// Browser, after the customer chooses a plan
+const kmaClick = window.kma?.getClickId?.() ?? null;
+await fetch('/api/checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({plan: 'annual', kmaClick})
+});
+
+// Server, after validating the selected plan and click
+const payment = await stripe.paymentIntents.create({
+  amount: annualPlan.amountMinor, currency: annualPlan.currency,
+  metadata: kmaClick ? {kma_click: kmaClick} : {}
+});</code></pre>
+          </section>
+          <section id="consent" class="integration-guide">
+            <h2>Consent and privacy</h2>
+            <p>
+              Load the website snippet from your consent manager’s
+              analytics-granted callback. Wire withdrawal and renewed consent to
+              the same project instance. Gate your own event handlers while
+              analytics is off.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>// In your consent manager’s withdrawal callback
+window.kma?.('optOut');
+
+// On a later grant, when the script is already loaded
+window.kma?.('optIn');</code></pre>
+            <p>
+              Every input in a website replay is masked. Mark other private text
+              with <code>data-kma-mask</code> and entire private sections with
+              <code>data-kma-block</code>. Record only synthetic data when
+              testing. Native apps provide an event timeline.
+            </p>
+          </section>
+          <section id="network-reports" class="integration-guide">
+            <h2>Ad network install reports</h2>
+            <p>
+              For Meta and TikTok campaigns, use this server integration when
+              your measurement provider can return your own first-launch
+              identifiers. With the user’s permission, associate the SDK’s
+              anonymous ID and first session ID with the permitted network
+              callback. On your server, authenticate the callback as your
+              provider specifies. Send one request with a unique report ID and a
+              KissMyApps project server key. Keep the server key in server-side
+              configuration.
+            </p>
+            <pre
+              tabindex="0"
+            ><code>// Inside your authenticated provider callback
+await fetch(KMA_FUNCTIONS_URL + '/attribution-network-install', {
+  method: 'POST',
+  headers: { Authorization: 'Bearer ' + KMA_SERVER_KEY,
+             'Content-Type': 'application/json' },
+  body: JSON.stringify({ network: 'tiktok', platform: 'android',
+    report_id: report.id, campaign: report.campaign,
+    anonymous_id: report.kmaAnonymousId, session_id: report.kmaFirstSessionId,
+    attribution_consent: customerHasAttributionConsent })
+});</code></pre>
+            <p>
+              Copy the project Functions base URL from your dashboard. Use a
+              test key first. A matched response appears in Sources. Existing
+              attribution keeps its credit. If the SDK’s install is still
+              pending, retry the same report ID after the install arrives. A
+              conflicting receipt or an ambiguous match requires review.
+            </p>
+            <p>
+              For Apple SKAdNetwork, open Attribution → Apple ad attribution for
+              the forwarding endpoint, supported versions and signed aggregate
+              counts. Use Costs → Ad accounts to import Meta and TikTok spend.
+            </p>
+          </section>
+          <section id="journeys" class="integration-guide">
+            <h2>Server-side funnel reporting</h2>
+            <p>
+              In the merchant dashboard, behavioral funnels count sequences of
+              SDK events. A partner-facing journey uses published stages and
+              signed events from your backend. Ask the program operator for the
+              product, funnel, environment and signing configuration. Keep
+              signing credentials on your server.
+            </p>
+            <a
+              class="platform-link"
+              href="https://merchant.kissmyapps.dev/developers/funnels/"
+              >Funnel event API and examples ↗</a
+            >
+          </section>
+          <section id="verify" class="integration-guide">
+            <h2>Verify your setup</h2>
+            <p>
+              Use a test key and a synthetic user. Track one event, identify the
+              user, open a second screen, sign out and reset the identity.
+              Verify the event, session and user in the merchant console.
+            </p>
+            <p>
+              For an affiliate program, test the invitation, approval, creator
+              link, checkout and credited sale. Check a refund and compare the
+              merchant sale with creator earnings. Use a provider test
+              environment for money movement. For a $20 order with no tax and a
+              30% sale commission, check for $6 pending. A full refund should
+              reduce the earned amount to $0. Your agreement sets the actual
+              rate and hold.
+            </p>
+            <a class="platform-link" href="https://merchant.kissmyapps.dev"
+              >Open merchant dashboard <span aria-hidden="true">↗</span></a
+            >
+          </section>
+        </div>
+      </div>
+    </main>
+    <div class="wrap">
+      <footer class="footer" style="padding-top: 64px">
+        <div class="brand brand--footer">
+          Kissmyapps<span class="brand__tld">.dev</span>
+        </div>
+        <div class="footer__nav">
+          <a href="/marketplace">Marketplace</a
+          ><a href="/merchants">Merchants</a><a href="/partners">Partners</a
+          ><a href="/integrations">Integrations</a>
+          <a href="/">Home</a>
+          <a href="/capabilities">Capabilities</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/partnerships">Partnerships</a>
+          <a href="/contact">Contact</a>
+        </div>
+        <div class="footer__meta">
+          <span>© 2026 Kissmyapps.dev</span>
+        </div>
+      </footer>
+      <div class="footer__legal">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms and Conditions</a>
+        <span>1170 Harwood St, Vancouver, BC V6E 1R8</span>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

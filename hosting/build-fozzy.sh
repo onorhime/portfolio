@@ -10,7 +10,7 @@ rm -rf dist-fozzy dist-coin dist-plant kissmyapps-fozzy.zip
 mkdir -p dist-fozzy
 
 # --- main site ---
-for page in index capabilities portfolio partnerships contact privacy terms resume; do
+for page in index capabilities portfolio partnerships contact privacy terms resume marketplace merchants partners integrations; do
   cp "$page.html" dist-fozzy/
 done
 

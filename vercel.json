@@ -1,4 +1,16 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/checkout/:slug",
+      "destination": "https://partners.kissmyapps.dev/checkout/:slug",
+      "permanent": false
+    },
+    {
+      "source": "/marketplace/:slug",
+      "destination": "https://partners.kissmyapps.dev/marketplace/:slug",
+      "permanent": false
+    }
+  ]
 }
