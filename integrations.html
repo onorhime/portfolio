@@ -178,24 +178,37 @@
           <section id="react-native" class="integration-guide">
             <h2>React Native and Expo</h2>
             <p>
-              Install the published analytics package and its storage peer.
-              Initialize once at app startup and send an event after
-              initialization. Expo apps can install AsyncStorage with npx expo
-              install.
+              Install the SDK and AsyncStorage in your app. If you use Expo, use
+              the Expo command so it selects the storage version for your SDK.
             </p>
-            <pre
-              tabindex="0"
-            ><code>npm install @kissmyappss/react-native@1.0.0 @react-native-async-storage/async-storage
+            <pre tabindex="0"><code># React Native
+npm install @kissmyappss/react-native@1.1.0 @react-native-async-storage/async-storage
 
-// App.tsx
-import AsyncStorage from &#x27;@react-native-async-storage/async-storage&#x27;;
-import { KissMyApps } from &#x27;@kissmyappss/react-native&#x27;;
-KissMyApps.init({key: &#x27;YOUR_PROJECT_TEST_KEY&#x27;, storage: AsyncStorage});
-KissMyApps.track(&#x27;plan_selected&#x27;, {plan: &#x27;annual&#x27;});</code></pre>
+# Expo
+npx expo install @kissmyappss/react-native@1.1.0 @react-native-async-storage/async-storage</code></pre>
+            <p>
+              Initialize once at startup after analytics consent. Use the
+              development client key from your merchant dashboard, send an event
+              and check for it in the project's development events.
+            </p>
+            <pre tabindex="0"><code>// App.tsx
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KissMyApps } from '@kissmyappss/react-native';
+
+KissMyApps.init({key: 'YOUR_PROJECT_TEST_KEY', storage: AsyncStorage});
+KissMyApps.track('plan_selected', {plan: 'annual'});</code></pre>
+            <p>
+              Expo Go supports event analytics. For Google Play install referrers
+              or Apple Ads attribution, rebuild a bare app or an Expo development
+              build with the native module. For a bare iOS app, run
+              <code>pod install</code> in <code>ios/</code> before rebuilding.
+              Enable attribution for your project and configure the app's link
+              domains to receive smart links with <code>KissMyApps.onDeepLink</code>.
+            </p>
             <a
               class="platform-link"
-              href="https://www.npmjs.com/package/@kissmyappss/react-native"
-              >Published package and API <span aria-hidden="true">↗</span></a
+              href="https://www.npmjs.com/package/@kissmyappss/react-native/v/1.1.0"
+              >React Native 1.1.0 API and native setup <span aria-hidden="true">↗</span></a
             >
           </section>
           <section id="flutter" class="integration-guide">
@@ -317,10 +330,10 @@ com.kissmyapps.KissMyApps.start(this, &quot;YOUR_PROJECT_TEST_KEY&quot;)</code><
               stable app user ID when identifying the signed-in customer.
             </p>
             <p>
-              Flutter, Swift and Android 1.1.0 support install attribution, deep
-              links and revenue events. React Native 1.0.0 supports event
-              analytics. Follow the version-specific package guide for your
-              platform.
+              Flutter, Swift, Android and React Native 1.1.0 support install
+              attribution, deep links and revenue events. In React Native, pass
+              the confirmed store transaction ID to <code>KissMyApps.revenue</code>.
+              For a refund, send a negative amount with the original transaction ID.
             </p>
             <pre
               tabindex="0"
