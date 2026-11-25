@@ -2685,10 +2685,34 @@ body {
 
 /* Affiliate platform pages share the studio's Outfit typography and palette. */
 .nav__link--marketplace, .menu__link--marketplace { color: var(--yellow); }
-.studio-menu { position: relative; }
-.studio-menu summary { cursor:pointer; padding: 9px 14px; font-weight:700; }
-.studio-menu > div { position:absolute; right:0; top:100%; padding:.55rem; background:var(--card); border-radius:14px; z-index:5; }
-.studio-menu .nav__link { display:block; white-space:nowrap; }
+.menu__link--merchants { color: var(--green); }
+.menu__link--partners { color: var(--pink); }
+.menu__link--integrations { color: var(--lblue); }
+.nav__pill .platform-menu { position: relative; white-space: nowrap; }
+.nav__pill .platform-menu > div {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 5;
+  padding: .55rem;
+  background: var(--card);
+  border-radius: 14px;
+}
+.nav__pill .platform-menu a { display: block; white-space: nowrap; }
+.menu__links .platform-menu > div {
+  display: grid;
+  padding-left: 20px;
+  border-left: 2px solid var(--yellow);
+}
+.menu__links .platform-menu a { font-size: 28px; }
+.menu__links a[aria-current="page"] { text-decoration: underline; text-underline-offset: .16em; }
+
+@media (min-width: 860px) and (max-width: 1120px) {
+  .nav__pill { gap: 2px; }
+  .nav__pill .nav__link { padding: 9px 6px; font-size: 14px; letter-spacing: .4px; }
+  .nav .brand { font-size: 22px; }
+}
+
 .platform-page { max-width:var(--content); margin:auto; padding:0 24px 80px; }
 .platform-page .page-head { padding-left:0; padding-right:0; }
 .platform-page .page-head h1 { color:var(--tone); }

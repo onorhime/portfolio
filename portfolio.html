@@ -11,7 +11,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="css/styles.css?v=8532fbf1b2a7">
+  <link rel="stylesheet" href="css/styles.css?v=7e999bd85a71">
 </head>
 <body>
 
@@ -22,17 +22,20 @@
     <div class="nav__inner">
       <a href="/" style="text-decoration: none;"><div class="brand">Kissmyapps<span class="brand__tld">.dev</span></div></a>
       <div class="nav__pill">
-        <a href="/marketplace" class="nav__link nav__link--marketplace">Marketplace</a>
-        <a href="/merchants" class="nav__link nav__link--merchants">Merchants</a>
-        <a href="/partners" class="nav__link nav__link--partners">Partners</a>
-        <a href="/integrations" class="nav__link nav__link--integrations">Integrations</a>
-        <details class="studio-menu"><summary>Studio</summary><div>
         <a href="/" class="nav__link nav__link--home">Home</a>
         <a href="/capabilities" class="nav__link nav__link--capabilities">Capabilities</a>
-        <a href="/portfolio" class="nav__link nav__link--portfolio is-current">Portfolio</a>
+        <a href="/portfolio" class="nav__link nav__link--portfolio is-current" aria-current="page">Portfolio</a>
         <a href="/partnerships" class="nav__link nav__link--partnerships">Partnerships</a>
         <a href="/contact" class="nav__link nav__link--contact">Contact</a>
-        </div></details>
+        <details class="platform-menu">
+          <summary class="nav__link">Platform</summary>
+          <div>
+            <a href="/marketplace" class="nav__link nav__link--marketplace">Marketplace</a>
+            <a href="/merchants" class="nav__link nav__link--merchants">Merchants</a>
+            <a href="/partners" class="nav__link nav__link--partners">Partners</a>
+            <a href="/integrations" class="nav__link nav__link--integrations">Integrations</a>
+          </div>
+        </details>
       </div>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
@@ -47,15 +50,20 @@
       <button class="menu__close" id="menuClose" aria-label="Close menu">✕</button>
     </div>
     <div class="menu__links">
-        <a href="/marketplace" class="menu__link menu__link--marketplace">Marketplace</a>
-        <a href="/merchants" class="menu__link menu__link--merchants">Merchants</a>
-        <a href="/partners" class="menu__link menu__link--partners">Partners</a>
-        <a href="/integrations" class="menu__link menu__link--integrations">Integrations</a>
       <a href="/" class="menu__link menu__link--home">Home</a>
       <a href="/capabilities" class="menu__link menu__link--capabilities">Capabilities</a>
-      <a href="/portfolio" class="menu__link menu__link--portfolio">Portfolio</a>
+      <a href="/portfolio" class="menu__link menu__link--portfolio" aria-current="page">Portfolio</a>
       <a href="/partnerships" class="menu__link menu__link--partnerships">Partnerships</a>
       <a href="/contact" class="menu__link menu__link--contact">Contact</a>
+      <details class="platform-menu">
+        <summary class="menu__link">Platform</summary>
+        <div>
+          <a href="/marketplace" class="menu__link menu__link--marketplace">Marketplace</a>
+          <a href="/merchants" class="menu__link menu__link--merchants">Merchants</a>
+          <a href="/partners" class="menu__link menu__link--partners">Partners</a>
+          <a href="/integrations" class="menu__link menu__link--integrations">Integrations</a>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -197,6 +205,6 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=9228de6e2438"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
   var menu = document.getElementById('menu');
   var burger = document.getElementById('burger');
   var menuClose = document.getElementById('menuClose');
+  var mobilePlatform = menu && menu.querySelector('.platform-menu');
 
   function openMenu() {
     if (!menu) return;
@@ -29,6 +30,7 @@
 
   function closeMenu() {
     if (!menu || menu.hidden) return;
+    if (mobilePlatform) mobilePlatform.open = false;
     menu.hidden = true;
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
@@ -37,6 +39,23 @@
 
   // pages like the coin partner subdomain have no burger nav
   if (menu && burger && menuClose) {
+    var desktopPlatform = document.querySelector('.nav__pill .platform-menu');
+
+    if (desktopPlatform) {
+      document.addEventListener('click', function (e) {
+        if (!desktopPlatform.contains(e.target)) desktopPlatform.open = false;
+      });
+      desktopPlatform.addEventListener('focusout', function (e) {
+        if (!desktopPlatform.contains(e.relatedTarget)) desktopPlatform.open = false;
+      });
+      desktopPlatform.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && desktopPlatform.open) {
+          desktopPlatform.open = false;
+          desktopPlatform.querySelector('summary').focus();
+        }
+      });
+    }
+
     burger.addEventListener('click', openMenu);
     menuClose.addEventListener('click', closeMenu);
 
